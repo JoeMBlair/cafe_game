@@ -10,12 +10,15 @@ var held_item
 var actions = []
 var object
 onready var body_sprite = get_node("AnimatedSprite")
+onready var anim_player = get_node("AnimationPlayer")
+
 
 func _process(delta):
 	debug()
 	
 	if Input.is_action_just_pressed("interact"):
 		action()
+
 
 func _physics_process(delta):
 	get_input()
@@ -27,29 +30,14 @@ func _physics_process(delta):
 	elif velocity == Vector2.ZERO and not state == "idle":
 		state = "idle"
 	
-	body_sprite.animation = String(state + "_" + direction)
+	anim_player.play(String(state + "_" + direction))
 	
-	#Actions
 	
-
-
-#		if action == "Interactable":
-#			pass
-#		elif action == "Pickup":
-#			if held_item == null:
-#				if in_zone:
-#					item.held = true
-#					item.hand = get_node("Hand")
-#					held_item = item
-#			elif held_item != null and not in_zone:
-#				item.held = false
-#				held_item = null
-#
 	if Input.is_action_just_pressed("eat") and held_item != null:
 		if held_item.state == "cooked":
 			eat()
-			
-	
+
+
 func get_input():
 	velocity = Vector2.ZERO
 	if Input.is_action_pressed("move_right"):
@@ -87,49 +75,55 @@ func action():
 				closest_action = action
 				
 		if closest_action.type == "Interactable":
-			closest_action.use()
+			closest_action.use(self)
 		elif closest_action.type == "PickUp" and held_item == null:
-			closest_action.held = true
-			closest_action.hand = get_node("Hand")
-			held_item = closest_action
-			actions.erase(closest_action)
-		
-			
-	
-#	if action ==  "PickUp" and not held_item:
-#		item.held = true
-#		item.hand = get_node("Hand")
-#		held_item = item
-#		item.get_node("CollisionShape2D").disabled			
-##			action = null
-#	if action == "Interactable":
-#		object.cook()
-#		pass
-#
-#	if action == null and held_item:
-#		item.held = false
-#		held_item = null
-	pass
-	
+			pick_up(closest_action)
+#			closest_action.held = true
+#			closest_action.hand = get_node("Hand")
+#			closest_action.player = self
+#			held_item = closest_action
+#			actions.erase(closest_action)
+
+
 func debug():
 	if Input.is_action_just_pressed("Debug"):
 		print(actions)
-	
+
+
 func eat():
 	$AnimationPlayer.play("eat")
 	held_item.get_node("AnimationPlayer").play("eat")
 
-#func _on_DetectorRadius_area_entered(area):
-#	if area.is_in_group("Interactable"):
-#		action = "Interactable"
-#		object = area.get_parent()
-#		print(object.name)
-#	if area.is_in_group("PickUp") and area != held_item:
-#		action = "PickUp"
-#		item = area
-#
-#
-#
-#func _on_DetectorRadius_area_exited(area):
-##	if action
+func remove_item():
+	var give_item = held_item
+	held_item.held = false
+	held_item.hand = null
+	held_item = null
+	return give_item
+	
+func pick_up(item):
+	held_item = item
+	item.held = true
+	item.hand = get_node("Hand")
+	item.player = self
+	actions.erase(item)
+	print("Player in range: %s")
+		
 
+func _on_DetectorRadius_area_entered(area):
+	if area.is_in_group("Interactable") or area.is_in_group("PickUp"):
+		if area.get_owner() == self.get_owner():
+			actions.append(area)
+		else:
+			actions.append(area.get_parent())
+		print(actions)
+
+
+func _on_DetectorRadius_area_exited(area):
+	if area.is_in_group("Interactable") or area.is_in_group("PickUp"):
+		if area.get_owner() == self.get_owner():
+			actions.erase(area)
+		else:
+			actions.erase(area.get_parent())
+		print(actions)
+	
