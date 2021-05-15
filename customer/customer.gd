@@ -28,9 +28,7 @@ func _ready():
 
 func _process(delta):
 	if Input.is_action_just_pressed("Debug"):
-		var bodies = $DetectorPlayer.get_overlapping_bodies()
-		for body in bodies:
-			print(body.name)
+		pass
 	if seated and not ordered:
 		var bodies = $DetectorPlayer.get_overlapping_bodies()
 		for body in bodies:

@@ -12,6 +12,9 @@ var held_item = null
 func _ready():
 	pass # Replace with function body.
 
+func _process(delta):
+	if Input.is_action_just_pressed("Debug"):
+		print("Table - Held item: %s" % held_item)
 
 func use(player):
 	if player.held_item != null:
@@ -23,14 +26,20 @@ func use(player):
 		player.pick_up(remove_item())
 
 func pick_up(item):
-	held_item = item
 	item.held = true
-	item.hand = get_node("Detector")
 	item.player = self
+	item.hand = get_node("Detector")
+	held_item = item
 
 func remove_item():
-	var give_item = held_item
-	held_item.held = false
-	held_item.hand = null
+	var item = held_item
+	item.held = false
+	item.hand = null
 	held_item = null
-	return give_item
+	return item
+	
+#	var give_item = held_item
+#	held_item.held = false
+#	held_item.hand = null
+#	held_item = null
+#	return give_item

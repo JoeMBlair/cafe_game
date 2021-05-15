@@ -87,8 +87,7 @@ func action():
 
 func debug():
 	if Input.is_action_just_pressed("Debug"):
-		print(actions)
-
+		print("Player - Held item: %s" % held_item)
 
 func eat():
 	$AnimationPlayer.play("eat")
@@ -102,16 +101,21 @@ func remove_item():
 	return give_item
 	
 func pick_up(item):
-	held_item = item
 	item.held = true
+	item.player = self	
 	item.hand = get_node("Hand")
-	item.player = self
+	held_item = item
 	actions.erase(item)
-	print("Player in range: %s")
 		
-
+#	Checks for objects to interact with or pick up and adds them to an action 
+#	queue or removes them if out of range
 func _on_DetectorRadius_area_entered(area):
-	if area.is_in_group("Interactable") or area.is_in_group("PickUp"):
+	if area.is_in_group("Interactable"):
+		if area.get_owner() == self.get_owner():
+			actions.append(area)
+		else:
+			actions.append(area.get_parent())
+	if area.is_in_group("PickUp") and not held_item:
 		if area.get_owner() == self.get_owner():
 			actions.append(area)
 		else:

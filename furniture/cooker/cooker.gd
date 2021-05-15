@@ -38,11 +38,11 @@ func pick_up(item):
 
 
 func remove_item():
-	var give_item = held_item
-	held_item.held = false
-	held_item.hand = null
+	var item = held_item
+	item.held = false
+	item.hand = null
 	held_item = null
-	return give_item
+	return item
 
 
 func _on_Timer_timeout():
