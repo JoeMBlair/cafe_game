@@ -78,11 +78,6 @@ func action():
 			closest_action.use(self)
 		elif closest_action.type == "PickUp" and held_item == null:
 			pick_up(closest_action)
-#			closest_action.held = true
-#			closest_action.hand = get_node("Hand")
-#			closest_action.player = self
-#			held_item = closest_action
-#			actions.erase(closest_action)
 
 
 func debug():
@@ -120,7 +115,6 @@ func _on_DetectorRadius_area_entered(area):
 			actions.append(area)
 		else:
 			actions.append(area.get_parent())
-		print(actions)
 
 
 func _on_DetectorRadius_area_exited(area):
@@ -129,5 +123,4 @@ func _on_DetectorRadius_area_exited(area):
 			actions.erase(area)
 		else:
 			actions.erase(area.get_parent())
-		print(actions)
 	

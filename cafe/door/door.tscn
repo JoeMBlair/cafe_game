@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://cafe/door/door.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 48, 10 )
+
+[node name="Door" type="Area2D" groups=[
+"Door",
+]]
+position = Vector2( 432, 598 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -32.0
+margin_top = -57.0
+margin_right = 64.0
+margin_bottom = -41.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 16, -47 )
+shape = SubResource( 1 )
