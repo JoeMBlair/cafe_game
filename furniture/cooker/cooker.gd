@@ -15,19 +15,21 @@ func _process(delta):
 
 
 func use(player):
-	if player.held_item != null:
-		if not held_item:
-			if player.held_item.is_in_group("Food"):
-				held_item = player.remove_item()
-				pick_up(held_item)
-				in_use = true
-				held_item.modulate = Color(0,0,0,0)
-				held_item.global_position = Vector2.ZERO
-				$AnimatedSprite.modulate = Color(1, 0, 0)
-				$Timer.wait_time = held_item.cook_time
-				$Timer.start()
-	elif held_item and player.held_item == null:	
-		player.pick_up(remove_item())
+	print($Timer.is_stopped())
+	if $Timer.is_stopped():
+		if player.held_item != null:
+			if not held_item:
+				if player.held_item.is_in_group("Food"):
+					held_item = player.remove_item()
+					pick_up(held_item)
+					in_use = true
+					held_item.modulate = Color(0,0,0,0)
+					held_item.global_position = Vector2.ZERO
+					$AnimatedSprite.modulate = Color(1, 0, 0)
+					$Timer.wait_time = held_item.cook_time
+					$Timer.start()
+		elif held_item and player.held_item == null:	
+			player.pick_up(remove_item())
 
 
 func pick_up(item):
@@ -46,11 +48,10 @@ func remove_item():
 
 
 func _on_Timer_timeout():
-	held_item.modulate = Color(1, 1, 1, 1)
+	held_item.modulate = Color(1, 1 , 1, 1)
 	held_item.get_node("AnimatedSprite").animation = "cooked"
 	held_item.global_position = $OvenTray.global_position
 	$AnimatedSprite.modulate = Color(1, 1, 1)
 	held_item.state = "cooked"
 	in_use = false
-	pass # Replace with function body.
 

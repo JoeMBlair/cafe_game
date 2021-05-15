@@ -26,12 +26,17 @@ func debug():
 
 func _ready():
 	chairs = get_tree().get_nodes_in_group("Chair")
-	choose_chair()
-	state = "goto_chair"
+	if not choose_chair():
+		state = "wait"
+	else:
+		state = "goto_chair"
 
 
 func _process(delta):
-	if state == "goto_chair":
+	if state == "wait":
+		if choose_chair():
+			state = "goto_chair"
+	elif state == "goto_chair":
 		if goto_location(chosen_chair):
 			state = "seated"
 	elif state == "seated":
@@ -42,15 +47,16 @@ func _process(delta):
 				break
 		order()
 	elif state == "ordered":
-		if table.held_item != null and not $EatTimer.time_left:
-			if table.held_item.food_name == item_chosen:
-				talk("Thank you!")
-				$EatTimer.start()
-				print($EatTimer.paused)
+		var plate = table.plates[table.nearest_plate(self)]
+		if plate["In Use"] and not $EatTimer.time_left:
+			if plate["Held Item"].food_name == item_chosen:
+				if plate["Held Item"].state == "uncooked":
+					talk("That's not cooked!")
+				else:
+					talk("Thank you!")
+					$EatTimer.start()
 			else:
 				talk("That's not what I ordered.")
-				$SpeechBubble.visible = true
-				$Speech.text = "That's not what I ordered."
 	elif state == "ate":
 			if go_home():
 				self.queue_free()
@@ -58,8 +64,9 @@ func _process(delta):
 
 func talk(phrase):
 	$SpeechBubble.visible = true
-	$Speech.visible = true				
+	$Speech.visible = true
 	$Speech.text = phrase
+
 
 func choose_chair():
 	if not chosen_chair:
@@ -67,12 +74,17 @@ func choose_chair():
 			if not chair.in_use:
 				closet_chair = chair
 				break
+		if closet_chair == null:
+			return false
+				
 	for chair in chairs:
 		if not chair.in_use:
 			if chair.global_position.distance_to(self.global_position) < closet_chair.global_position.distance_to(self.global_position):
 				closet_chair = chair
 	chosen_chair = closet_chair
 	closet_chair.in_use = self
+	return true
+
 
 func goto_location(object):
 	vector2vector = object.global_position - self.global_position
@@ -92,11 +104,13 @@ func goto_seat():
 		velocity = direction * speed
 		velocity = move_and_slide(velocity)
 
+
 func order():
 	randomize()
 	item_chosen = menu[rand_range(0, menu.size())]
 	print(item_chosen)
 	state = "ordered"
+
 
 func eat():
 	pick_up(table.remove_item())
@@ -111,9 +125,11 @@ func pick_up(item):
 	item.held = true
 	item.hand = get_node("DetectorChair")
 	item.player = self
-	
+
+
 func remove_item():
 	pass
+
 
 func go_home():
 	if not door:
@@ -123,21 +139,12 @@ func go_home():
 		return false
 	else:
 		return true
-	
-	
-	
-
-
-#func _on_DetectorChair_area_entered(area):
-#	if area.is_in_group("SitPoint"):
-#		state = "seated"
-#		self.global_position = area.global_position
 
 
 func _on_DetectorPlayer_body_entered(body):
 	if body.is_in_group("Player"):
 		if state == "ordered":
-			talk(String("I want %s" % item_chosen))
+			talk(String("I want %s, please!" % item_chosen))
 		player_in_range = true
 
 

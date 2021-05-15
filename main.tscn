@@ -48,7 +48,7 @@ scale = Vector2( 2, 2 )
 [node name="SittingArea" type="YSort" parent="Objects"]
 
 [node name="TableSet1" type="YSort" parent="Objects/SittingArea"]
-position = Vector2( 260.484, 127.434 )
+position = Vector2( 259.484, 136.434 )
 
 [node name="ChairTop" parent="Objects/SittingArea/TableSet1" instance=ExtResource( 7 )]
 position = Vector2( -164.484, -95.434 )
@@ -62,6 +62,23 @@ directions = "right"
 position = Vector2( -116.484, -47.434 )
 
 [node name="Table" parent="Objects/SittingArea/TableSet1" instance=ExtResource( 4 )]
+position = Vector2( -164.484, -47.434 )
+
+[node name="TableSet2" type="YSort" parent="Objects/SittingArea"]
+position = Vector2( 260.484, 26.434 )
+
+[node name="ChairTop" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 7 )]
+position = Vector2( -164.484, -95.434 )
+directions = "front"
+
+[node name="ChairLeft" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 7 )]
+position = Vector2( -212.484, -47.434 )
+directions = "right"
+
+[node name="ChairRight" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 7 )]
+position = Vector2( -116.484, -47.434 )
+
+[node name="Table" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 4 )]
 position = Vector2( -164.484, -47.434 )
 
 [node name="Other" type="YSort" parent="Objects"]
