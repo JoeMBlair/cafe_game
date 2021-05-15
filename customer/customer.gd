@@ -15,6 +15,8 @@ var player_in_range = false
 var table
 var held_item
 var eaten = false
+var door
+var at_home = false
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -52,8 +54,8 @@ func _process(delta):
 			else:
 				$SpeechBubble.visible = true
 				$Speech.text = "That's not what I ordered."
-
-			
+	if eaten and not at_home:
+		go_home()
 
 
 func choose_chair():
@@ -74,7 +76,7 @@ func goto_seat():
 	if not seated:
 		vector2vector = closet_chair.global_position - self.global_position
 		direction = vector2vector.normalized()
-		velocity = direction * 50
+		velocity = direction * speed
 		velocity = move_and_slide(velocity)
 
 func order():
@@ -103,7 +105,16 @@ func remove_item():
 	pass
 
 func go_home():
-	seated = false
+	if not door:
+		seated = false
+		door = get_tree().get_nodes_in_group("Door")
+	vector2vector = door[0].global_position - self.global_position
+	direction = vector2vector.normalized()
+	velocity = direction * speed
+	velocity = move_and_slide(velocity)
+	
+	
+	
 
 
 func _on_DetectorChair_area_entered(area):
