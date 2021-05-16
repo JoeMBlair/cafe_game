@@ -13,39 +13,47 @@ func _ready():
 	food_spots = get_tree().get_nodes_in_group("FoodSpot")
 	for spot in food_spots:
 		plates[spot] = {"node": spot, "In Use": false, "Held Item": null}
-	print(plates.values())
-	print(plates.keys())
 	
 
+# warning-ignore:unused_argument
 func _process(delta):
 	if Input.is_action_just_pressed("Debug"):
-		print("Table - Held item: %s" % held_item)
+		pass
 
 func use(player):
-	chosen_plate = nearest_plate(player)	
+	chosen_plate = plates[nearest_plate(player)]
+	
+	if chosen_plate["In Use"]:
+		if chosen_plate["Held Item"].player:
+			print(chosen_plate["Held Item"].player.name)
 	if player.held_item != null:
-		if not plates[chosen_plate]["In Use"]:
+		if not chosen_plate["In Use"]:
 			if player.held_item.is_in_group("Food"):
-				held_item = player.remove_item()
-				pick_up(held_item)
-	elif held_item and player.held_item == null:
-		plates[chosen_plate]["In Use"] = false
-		player.pick_up(remove_item())
+				pick_up(player.remove_item())
+	elif chosen_plate["In Use"]:
+		if player.held_item == null and not chosen_plate["Held Item"].player:
+			chosen_plate["In Use"] = false
+			player.pick_up(remove_item(chosen_plate["Held Item"]))
+
+func check_item(player):
+	return plates[nearest_plate(player)]
+
 
 func pick_up(item):
 	item.held = true
-	item.player = self
-	item.hand = chosen_plate
-	plates[chosen_plate]["Held Item"] = item
-	plates[chosen_plate]["In Use"] = true
-	
+#	item.player = self
+	item.hand = chosen_plate["node"]
+	chosen_plate["Held Item"] = item
+	chosen_plate["In Use"] = true
 
-func remove_item():
-	var item = held_item
+
+func remove_item(item):
+#	var item = held_item
 	item.held = false
 	item.hand = null
-	plates[chosen_plate]["Held Item"] = null	
-	plates[chosen_plate]["In Use"] = false
+	item.player = null
+	chosen_plate["Held Item"] = null	
+	chosen_plate["In Use"] = false
 	return item
 
 func nearest_plate(player):

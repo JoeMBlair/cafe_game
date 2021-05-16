@@ -5,7 +5,7 @@ var velocity = Vector2.ZERO
 var direction = "down"
 var state = "idle"
 var in_zone = false
-var item
+#var item
 var held_item
 var actions = []
 var object
@@ -13,6 +13,7 @@ onready var body_sprite = get_node("AnimatedSprite")
 onready var anim_player = get_node("AnimationPlayer")
 
 
+# warning-ignore:unused_argument
 func _process(delta):
 	debug()
 	
@@ -20,6 +21,7 @@ func _process(delta):
 		action()
 
 
+# warning-ignore:unused_argument
 func _physics_process(delta):
 	get_input()
 	velocity = move_and_slide(velocity)
@@ -62,39 +64,51 @@ func get_input():
 
 
 func action():
+#	Drop Item
 	if actions == []:
 		if held_item != null:
-			held_item.held = false
-			held_item = null
+			remove_item()
 		pass
 	else:
-		var closest_action = actions[0]
+#		Interact with objects of pick up
+		var nearest_action = actions[0]
 		
 		for action in actions:
-			if action < closest_action:
-				closest_action = action
-				
-		if closest_action.type == "Interactable":
-			closest_action.use(self)
-		elif closest_action.type == "PickUp" and held_item == null:
-			pick_up(closest_action)
+			if action < nearest_action:
+				nearest_action = action
+			
+		if nearest_action.type == "PickUp" and not held_item and nearest_action.player != self:
+			pick_up(nearest_action)	
+		elif nearest_action.type == "Interactable":
+			nearest_action.use(self)
+		
 
 
 func debug():
 	if Input.is_action_just_pressed("Debug"):
-		print("Player - Held item: %s" % held_item)
+		print("Actions:")		
+		if not actions == []:
+			for action in actions:
+				print(action.name)
+		else:
+			print("none")
+		if held_item:
+			held_item.state = "cooked"
+			held_item.get_node("AnimatedSprite").animation = "cooked"
 
 func eat():
 	$AnimationPlayer.play("eat")
 	held_item.get_node("AnimationPlayer").play("eat")
 
 func remove_item():
-	var give_item = held_item
-	held_item.held = false
-	held_item.hand = null
+	var item = held_item
+	item.held = false
+	item.hand = null
+	item.player = null
 	held_item = null
-	return give_item
+	return item
 	
+# warning-ignore:shadowed_variable
 func pick_up(item):
 	item.held = true
 	item.player = self	
@@ -110,16 +124,18 @@ func _on_DetectorRadius_area_entered(area):
 			actions.append(area)
 		else:
 			actions.append(area.get_parent())
-	if area.is_in_group("PickUp") and not held_item:
-		if area.get_owner() == self.get_owner():
+			
+	if area.is_in_group("PickUp") and not held_item and not area.held:
+		if area.get_owner() == self.get_owner() or area.get_owner() == null:
 			actions.append(area)
 		else:
 			actions.append(area.get_parent())
+		
 
 
 func _on_DetectorRadius_area_exited(area):
 	if area.is_in_group("Interactable") or area.is_in_group("PickUp"):
-		if area.get_owner() == self.get_owner():
+		if area.get_owner() == self.get_owner()or area.get_owner() == null:
 			actions.erase(area)
 		else:
 			actions.erase(area.get_parent())

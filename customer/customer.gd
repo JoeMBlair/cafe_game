@@ -1,23 +1,24 @@
 extends KinematicBody2D
 
+# Player
 var state = "idle"
-var chairs
-var seated = false
-var chosen_chair
 var vector2vector = Vector2.ZERO
-var closet_chair
 var direction
 var velocity = Vector2.ZERO
 var speed = 100
-var ordered = false
-var menu = ["Cake", "Chocolate Cake"]
 var item_chosen
 var player_in_range = false
-var table
 var held_item
-var eaten = false
+
+# Objects
+var menu = ["Cake", "Chocolate Cake"]
 var door
-var at_home = false
+var table
+var chairs
+var closet_chair
+var chosen_chair
+
+
 
 func debug():
 	if Input.is_action_just_pressed("Debug"):
@@ -32,7 +33,7 @@ func _ready():
 		state = "goto_chair"
 
 
-func _process(delta):
+func _process(_delta):
 	if state == "wait":
 		if choose_chair():
 			state = "goto_chair"
@@ -47,17 +48,19 @@ func _process(delta):
 				break
 		order()
 	elif state == "ordered":
-		var plate = table.plates[table.nearest_plate(self)]
+		var plate = table.check_item(self)
 		if plate["In Use"] and not $EatTimer.time_left:
 			if plate["Held Item"].food_name == item_chosen:
 				if plate["Held Item"].state == "uncooked":
 					talk("That's not cooked!")
 				else:
+					plate["Held Item"].player = self
 					talk("Thank you!")
 					$EatTimer.start()
 			else:
 				talk("That's not what I ordered.")
 	elif state == "ate":
+			talk("Thanks for the meal! Bye.")
 			if go_home():
 				self.queue_free()
 
@@ -98,7 +101,7 @@ func goto_location(object):
 
 
 func goto_seat():
-	if not seated:
+	if not state == "seated":
 		vector2vector = closet_chair.global_position - self.global_position
 		direction = vector2vector.normalized()
 		velocity = direction * speed
@@ -113,14 +116,14 @@ func order():
 
 
 func eat():
-	pick_up(table.remove_item())
+	pick_up(table.remove_item(table.plates[table.nearest_plate(self)]["Held Item"]))
 	$AnimationPlayer.play("eat")
 	held_item.get_node("AnimationPlayer").play("eat")
 	state = "eaten"
 
 func pick_up(item):
 	if not item:
-		return
+		return false
 	held_item = item
 	item.held = true
 	item.hand = get_node("DetectorChair")
@@ -128,12 +131,16 @@ func pick_up(item):
 
 
 func remove_item():
-	pass
+	var item = held_item
+	item.held = false
+	item.hand = null
+	item.player = null
+	held_item = null
+	return item
 
 
 func go_home():
 	if not door:
-		seated = false
 		door = get_tree().get_nodes_in_group("Door")
 	if not goto_location(door[0]):
 		return false
@@ -156,8 +163,8 @@ func _on_DetectorPlayer_body_exited(body):
 
 
 func _on_EatTimer_timeout():
-	if not table.held_item:
-		eaten = false
+	if not table.plates[table.nearest_plate(self)]:
+		pass
 	else:
 		eat()
 

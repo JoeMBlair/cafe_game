@@ -7,8 +7,10 @@ var held = false
 var type = "PickUp"
 var player
 var cook_time = 3
+var recipe = ["Butter","Chocolate", "Egg", "Flour"]
 
 
+# warning-ignore:unused_argument
 func _process(delta):
 	if held:
 		self.global_position = hand.global_position

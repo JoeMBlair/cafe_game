@@ -10,14 +10,16 @@ func _ready():
 	pass # Replace with function body.
 
 
+# warning-ignore:unused_argument
 func _process(delta):
 	pass
 
 
 func use(player):
-	print($Timer.is_stopped())
+	if held_item != null:
+		print(held_item.food_name)
 	if $Timer.is_stopped():
-		if player.held_item != null:
+		if player.held_item:
 			if not held_item:
 				if player.held_item.is_in_group("Food"):
 					held_item = player.remove_item()
@@ -30,13 +32,15 @@ func use(player):
 					$Timer.start()
 		elif held_item and player.held_item == null:	
 			player.pick_up(remove_item())
+			
+	
 
 
 func pick_up(item):
 	held_item = item
 	item.held = true
 	item.hand = get_node("OvenTray")
-	item.player = self
+#	item.player = self
 
 
 func remove_item():

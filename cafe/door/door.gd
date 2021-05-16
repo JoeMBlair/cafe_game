@@ -6,12 +6,13 @@ func _ready():
 	
 	pass
 	
+# warning-ignore:unused_argument
 func _process(delta):
 	debug()
 
 
 func debug():
-	if Input.is_action_just_pressed("Debug"):
+	if Input.is_action_just_pressed("spawn"):
 		var instance = scene.instance()
 		add_child(instance)
 		instance.global_position = self.global_position
