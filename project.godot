@@ -55,9 +55,14 @@ _global_script_classes=[ {
 "path": "res://addons/behaviour_tree/nodes/decorators/decorator.gd"
 }, {
 "base": "Node",
-"class": "Food",
+"class": "FoodRecipes",
 "language": "GDScript",
-"path": "res://food/item_food.gd"
+"path": "res://food/food_recipes.gd"
+}, {
+"base": "Area2D",
+"class": "FoodTemplate",
+"language": "GDScript",
+"path": "res://food/food_item.gd"
 }, {
 "base": "Decorator",
 "class": "Inverter",
@@ -94,7 +99,8 @@ _global_script_class_icons={
 "Composite": "res://addons/behaviour_tree/icons/category_composite.svg",
 "ConditionLeaf": "res://addons/behaviour_tree/icons/condition.svg",
 "Decorator": "",
-"Food": "",
+"FoodRecipes": "",
+"FoodTemplate": "",
 "Inverter": "res://addons/behaviour_tree/icons/inverter.svg",
 "Leaf": "res://addons/behaviour_tree/icons/action.svg",
 "Limiter": "res://addons/behaviour_tree/icons/limiter.svg",
@@ -110,7 +116,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-ItemFood="*res://food/item_food.gd"
+ItemFood="*res://food/food_recipes.gd"
 
 [editor_plugins]
 

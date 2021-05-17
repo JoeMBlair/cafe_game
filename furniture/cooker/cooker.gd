@@ -53,9 +53,8 @@ func remove_item():
 
 func _on_Timer_timeout():
 	held_item.modulate = Color(1, 1 , 1, 1)
-	held_item.get_node("AnimatedSprite").animation = "cooked"
+	held_item.cook()
 	held_item.global_position = $OvenTray.global_position
 	$AnimatedSprite.modulate = Color(1, 1, 1)
-	held_item.state = "cooked"
 	in_use = false
 

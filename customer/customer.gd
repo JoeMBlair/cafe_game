@@ -11,7 +11,7 @@ var player_in_range = false
 var held_item
 
 # Objects
-var menu = ["Cake", "Chocolate Cake"]
+var menu = ["Cake", "Chocolate Cake", "Potato Salad"]
 var door
 var table
 var chairs
@@ -51,7 +51,7 @@ func _process(_delta):
 		var plate = table.check_item(self)
 		if plate["In Use"] and not $EatTimer.time_left:
 			if plate["Held Item"].food_name == item_chosen:
-				if plate["Held Item"].state == "uncooked":
+				if not plate["Held Item"].cooked:
 					talk("That's not cooked!")
 				else:
 					plate["Held Item"].player = self
@@ -118,7 +118,7 @@ func order():
 func eat():
 	pick_up(table.remove_item(table.plates[table.nearest_plate(self)]["Held Item"]))
 	$AnimationPlayer.play("eat")
-	held_item.get_node("AnimationPlayer").play("eat")
+	held_item.eat()
 	state = "eaten"
 
 func pick_up(item):
