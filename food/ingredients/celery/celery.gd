@@ -2,7 +2,7 @@ extends FoodTemplate
 
 var food_name = "Celery"
 var state = "uncut"
-var cooked = false
+var cooked = true
 var cut = false
 var hand
 var held = false

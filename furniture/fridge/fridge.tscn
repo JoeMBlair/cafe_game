@@ -35,3 +35,13 @@ position = Vector2( 0, 38 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detector"]
 shape = SubResource( 3 )
+
+[node name="Shelf" type="ColorRect" parent="."]
+visible = false
+margin_left = -38.0
+margin_top = -68.0
+margin_right = 38.0
+margin_bottom = 12.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

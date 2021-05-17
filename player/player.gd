@@ -19,6 +19,9 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("interact"):
 		action()
+	if Input.is_action_just_pressed("Drop"):
+		if held_item != null:
+			remove_item()
 
 
 # warning-ignore:unused_argument
@@ -64,13 +67,8 @@ func get_input():
 
 
 func action():
-#	Drop Item
-	if actions == []:
-		if held_item != null:
-			remove_item()
-		pass
-	else:
 #		Interact with objects of pick up
+	if actions != []:
 		var nearest_action = actions[0]
 		
 		for action in actions:
@@ -81,7 +79,7 @@ func action():
 			pick_up(nearest_action)	
 		elif nearest_action.type == "Interactable":
 			nearest_action.use(self)
-		
+	
 
 
 func debug():

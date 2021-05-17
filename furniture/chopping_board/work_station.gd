@@ -10,16 +10,19 @@ func use(player):
 	var player_to_board = player.global_position.distance_to($DetectorBoard.global_position)
 	
 	if player_to_bowl > player_to_board:
+#		Loads ingredient onto the cutting board
 		if player.held_item and not board_held_item:
 			if player.held_item.is_in_group("Food"):
 				var held_item = player.remove_item()
 				pick_up(held_item, "board")
+#		Checks if you can cut the ingredient if true then it cuts it up
 		elif not player.held_item and board_held_item:
 			if not board_held_item.cut:
 				board_held_item.cut()
 			else:
 				player.pick_up(remove_item(board_held_item, "board"))
 	else:
+#		Loads ingredient in the bowl
 		if player.held_item and bowl_inventory.size() != 4:
 			if player.held_item.is_in_group("Food") and not bowl_inventory.has(player.held_item):
 				var held_item = player.remove_item()

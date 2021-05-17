@@ -51,6 +51,9 @@ speed = 200
 [node name="Kitchen" type="YSort" parent="Objects"]
 position = Vector2( -528, -384 )
 
+[node name="Fridge" parent="Objects/Kitchen" instance=ExtResource( 21 )]
+position = Vector2( 416, 116 )
+
 [node name="WorkStation" parent="Objects/Kitchen" instance=ExtResource( 14 )]
 position = Vector2( 464, 128 )
 
@@ -151,6 +154,3 @@ position = Vector2( 672, 208 )
 
 [node name="Potato" parent="." instance=ExtResource( 19 )]
 position = Vector2( 640, 240 )
-
-[node name="Fridge" parent="." instance=ExtResource( 21 )]
-position = Vector2( 416, 116 )
