@@ -25,7 +25,7 @@ func cut():
 func cook():
 	item.cooked = true
 	item.get_node("AnimatedSprite").animation = "cooked"
-	item.food_name = String(item.food_name).replace("Uncooked", "Cooked")
+	item.food_name = String(item.food_name).replace("Uncooked ", "")
 
 
 func eat():

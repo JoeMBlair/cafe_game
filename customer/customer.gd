@@ -110,7 +110,7 @@ func goto_seat():
 
 func order():
 	randomize()
-	item_chosen = menu[rand_range(0, menu.size())]
+	item_chosen = ItemFood.food_recipes[rand_range(0, ItemFood.food_recipes.size())]["Name"]
 	print(item_chosen)
 	state = "ordered"
 

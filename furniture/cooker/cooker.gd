@@ -21,7 +21,7 @@ func use(player):
 	if $Timer.is_stopped():
 		if player.held_item:
 			if not held_item:
-				if player.held_item.is_in_group("Food"):
+				if player.held_item.is_in_group("Food") and not player.held_item.cooked:
 					held_item = player.remove_item()
 					pick_up(held_item)
 					in_use = true
@@ -40,7 +40,6 @@ func pick_up(item):
 	held_item = item
 	item.held = true
 	item.hand = get_node("OvenTray")
-#	item.player = self
 
 
 func remove_item():

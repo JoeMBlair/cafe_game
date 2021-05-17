@@ -3,6 +3,8 @@ extends FoodTemplate
 var food_name = "Uncooked Chocolate Cake"
 var state = "uncooked"
 var hand
+var cooked = false
+var cut = true
 var held = false
 var type = "PickUp"
 var player

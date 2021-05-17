@@ -1,30 +1,15 @@
-extends Area2D
+extends FoodTemplate
 
 var food_name = "Uncooked Cake"
 var state = "uncooked"
 var hand
+var cooked = false
+var cut = true
 var held = false
 var type = "PickUp"
 var player
 var cook_time = 2
 var recipe = ["Butter", "Egg", "Flour", "Sugar"]
 
-
-# warning-ignore:unused_argument
-func _process(delta):
-	if held:
-		self.global_position = hand.global_position
-	else:
-		global_position = global_position
-
-
-func cook():
-	state = "cooked"
-	$AnimatedSprite.animation = "cooked"
-	food_name = "Cake"
-
-func _on_AnimationPlayer_animation_finished(anim_name):
-	if anim_name == "eat":
-		player.remove_item()
-		self.queue_free()
-
+func _ready():
+	set_item(self)
