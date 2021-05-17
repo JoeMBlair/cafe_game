@@ -21,7 +21,7 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 15.0333
+radius = 8.06226
 
 [sub_resource type="Animation" id=3]
 resource_name = "eat"
@@ -45,7 +45,7 @@ tracks/0/keys = {
 script = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 0.06, 0.06 )
+scale = Vector2( 0.03, 0.03 )
 frames = SubResource( 1 )
 animation = "uncooked"
 

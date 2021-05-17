@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 export var speed = 200
+var move = true
 var velocity = Vector2.ZERO
 var direction = "down"
 var state = "idle"
@@ -27,7 +28,8 @@ func _process(delta):
 # warning-ignore:unused_argument
 func _physics_process(delta):
 	get_input()
-	velocity = move_and_slide(velocity)
+	if move == true:
+		velocity = move_and_slide(velocity)
 	
 	#Movement
 	if not velocity == Vector2.ZERO and not state == "walk":
@@ -54,14 +56,15 @@ func get_input():
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
 		
-	if velocity.y > 0:
-		direction = "down"
-	elif velocity.y < 0:
-		direction = "up"
-	elif velocity.x > 0:
-		direction = "right"
-	elif velocity.x < 0:
-		direction = "left"
+	if move == true:
+		if velocity.y > 0:
+			direction = "down"
+		elif velocity.y < 0:
+			direction = "up"
+		elif velocity.x > 0:
+			direction = "right"
+		elif velocity.x < 0:
+			direction = "left"
 		
 	velocity = velocity.normalized() * speed
 
