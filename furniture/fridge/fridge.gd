@@ -38,6 +38,7 @@ func use(player):
 		pass
 		var selected_item = shelf_spaces[space_select]["Item Node"]
 		player.pick_up(remove_item(selected_item, player))
+		open(player)
 	else:
 		open(player)
 	
@@ -60,9 +61,10 @@ func pick_up(item):
 func remove_item(item, character):
 	item.hand = null
 	item.get_parent().remove_child(item)
-	get_node("/node/Main").add_child(item)
-	shelf_spaces["Item Node"] = null
-	pass
+	get_node("/root/Main").add_child(item)
+	shelf_spaces[space_select]["Item Node"] = null
+	item.scale = Vector2(1, 1)
+	return item
 
 
 func open(character):
