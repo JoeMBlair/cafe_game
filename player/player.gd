@@ -8,7 +8,9 @@ var state = "idle"
 var in_zone = false
 #var item
 var held_item
-var actions = []
+#var actions = []
+var pick_ups = []
+var interactables = []
 var object
 onready var body_sprite = get_node("AnimatedSprite")
 onready var anim_player = get_node("AnimationPlayer")
@@ -71,28 +73,32 @@ func get_input():
 
 func action():
 #		Interact with objects of pick up
-	if actions != []:
-		var nearest_action = actions[0]
+	var nearest_pick_up = nearest_action(pick_ups)
+	var nearest_interactable = nearest_action(interactables)
+	if nearest_pick_up and not held_item and nearest_pick_up.player != self:
+		pick_up(nearest_pick_up)
+	elif nearest_interactable:
+		nearest_interactable.use(self)
 		
-		for action in actions:
-			if action < nearest_action:
-				nearest_action = action
-			
-		if nearest_action.type == "PickUp" and not held_item and nearest_action.player != self:
-			pick_up(nearest_action)	
-		elif nearest_action.type == "Interactable":
-			nearest_action.use(self)
-	
+		
+		
+		
+		
+#
+#	if nearest_action.type == "PickUp" :
+#		pick_up(nearest_action)	
+#	elif nearest_action.type == "Interactable":
+#		nearest_action.use(self)
 
 
 func debug():
 	if Input.is_action_just_pressed("Debug"):
-		print("Actions:")		
-		if not actions == []:
-			for action in actions:
-				print(action.name)
-		else:
-			print("none")
+#		print("Actions:")		
+#		if not actions == []:
+#			for action in actions:
+#				print(action.name)
+#		else:
+#			print("none")
 		if held_item:
 			held_item.state = "cooked"
 			held_item.get_node("AnimatedSprite").animation = "cooked"
@@ -100,6 +106,17 @@ func debug():
 func eat():
 	$AnimationPlayer.play("eat")
 	held_item.get_node("AnimationPlayer").play("eat")
+
+func nearest_action(actions):
+	if actions != []:
+		var nearest_action = actions[0]
+		
+		for action in actions:
+			if action < nearest_action:
+				nearest_action = action
+		return nearest_action
+	return false
+
 
 func remove_item():
 	var item = held_item
@@ -115,29 +132,34 @@ func pick_up(item):
 	item.player = self	
 	item.hand = get_node("Hand")
 	held_item = item
-	actions.erase(item)
+	pick_ups.erase(item)
 		
 #	Checks for objects to interact with or pick up and adds them to an action 
 #	queue or removes them if out of range
 func _on_DetectorRadius_area_entered(area):
 	if area.is_in_group("Interactable"):
 		if area.get_owner() == self.get_owner():
-			actions.append(area)
+			interactables.append(area)
 		else:
-			actions.append(area.get_parent())
+			interactables.append(area.get_parent())
 			
 	if area.is_in_group("PickUp") and not held_item and not area.held:
 		if area.get_owner() == self.get_owner() or area.get_owner() == null:
-			actions.append(area)
+			pick_ups.append(area)
 		else:
-			actions.append(area.get_parent())
+			pick_ups.append(area.get_parent())
 		
 
 
 func _on_DetectorRadius_area_exited(area):
-	if area.is_in_group("Interactable") or area.is_in_group("PickUp"):
+	if area.is_in_group("Interactable"):
 		if area.get_owner() == self.get_owner()or area.get_owner() == null:
-			actions.erase(area)
+			interactables.erase(area)
 		else:
-			actions.erase(area.get_parent())
+			interactables.erase(area.get_parent())
+	if area.is_in_group("PickUp"):
+		if area.get_owner() == self.get_owner()or area.get_owner() == null:
+			pick_ups.erase(area)
+		else:
+			pick_ups.erase(area.get_parent())
 	
