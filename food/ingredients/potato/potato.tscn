@@ -12,14 +12,14 @@ animations = [ {
 "name": "cut",
 "speed": 5.0
 }, {
-"frames": [  ],
-"loop": true,
-"name": "uncut",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 3 ) ],
 "loop": true,
 "name": "cooked",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "uncut",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 2 ) ],

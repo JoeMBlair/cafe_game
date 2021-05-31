@@ -1,16 +1,9 @@
 extends FoodTemplate
 
-var food_name = "Uncooked Egg"
-var state = "uncut"
-var cooked = false
-var cut = false
-var hand
-var held = false
-var type = "PickUp"
-var player
-var cook_time = 2
-var recipe
-
 func _ready():
 	set_item(self)
-
+	item_name = "Egg"
+	can_cook = true
+	cook_time = 2
+	valid_slots += ["Frying Pan", "Pot"]
+#extends Area2D

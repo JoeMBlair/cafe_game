@@ -11,63 +11,23 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 30, 32.1622 )
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 5.67497, 30.6506 )
-
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=2]
 radius = 5.5832
 
-[node name="Table" type="StaticBody2D"]
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 30, 32.1622 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 40, 40 )
+
+[node name="Table" type="Area2D" groups=[
+"Interactable",
+]]
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 10 )
-shape = SubResource( 2 )
-
-[node name="DetectorLeft" type="Area2D" parent="." groups=[
-"Interactable",
-]]
-position = Vector2( -37, -8 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorLeft"]
-position = Vector2( 0, 8 )
-shape = SubResource( 3 )
-
-[node name="DetectorTop" type="Area2D" parent="." groups=[
-"Interactable",
-]]
-position = Vector2( 8, -33 )
-rotation = 1.5708
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorTop"]
-position = Vector2( 0, 8 )
-shape = SubResource( 3 )
-
-[node name="DetectorBottom" type="Area2D" parent="." groups=[
-"Interactable",
-]]
-position = Vector2( 8, 39 )
-rotation = 1.5708
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorBottom"]
-position = Vector2( 0, 8 )
-shape = SubResource( 3 )
-
-[node name="DetectorRight" type="Area2D" parent="." groups=[
-"Interactable",
-]]
-position = Vector2( 37, -8 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorRight"]
-position = Vector2( 0, 8 )
-shape = SubResource( 3 )
 
 [node name="FoodSpots" type="Node2D" parent="."]
 
@@ -77,7 +37,7 @@ shape = SubResource( 3 )
 position = Vector2( -20, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodStopLeft"]
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="FoodSpotTop" type="Area2D" parent="FoodSpots" groups=[
 "FoodSpot",
@@ -85,7 +45,7 @@ shape = SubResource( 4 )
 position = Vector2( 0, -24 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodSpotTop"]
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="FoodSpotBottom" type="Area2D" parent="FoodSpots" groups=[
 "FoodSpot",
@@ -93,7 +53,7 @@ shape = SubResource( 4 )
 position = Vector2( 0, 23 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodSpotBottom"]
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="FoodSpotRight" type="Area2D" parent="FoodSpots" groups=[
 "FoodSpot",
@@ -101,4 +61,13 @@ shape = SubResource( 4 )
 position = Vector2( 20, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodSpotRight"]
+shape = SubResource( 2 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 0, 10 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 4 )

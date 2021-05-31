@@ -9,11 +9,12 @@ var speed = 100
 var item_chosen
 var player_in_range = false
 var held_item
+onready var scene = load("res://customer/customer.tscn")
 
 # Objects
-var menu = ["Cake", "Chocolate Cake", "Potato Salad"]
 var door
 var table
+var plate
 var chairs
 var closet_chair
 var chosen_chair
@@ -41,24 +42,27 @@ func _process(_delta):
 		if goto_location(chosen_chair):
 			state = "seated"
 	elif state == "seated":
-		var bodies = $DetectorPlayer.get_overlapping_bodies()
-		for body in bodies:
-			if body.name == "Table":
-				table = body
+		var areas = $DetectorPlayer.get_overlapping_areas()
+		for area in areas:
+			if area.name == "Table":
+				table = area
 				break
+		plate = table.check_item(self)
 		order()
 	elif state == "ordered":
-		var plate = table.check_item(self)
-		if plate["In Use"] and not $EatTimer.time_left:
-			if plate["Held Item"].food_name == item_chosen:
-				if not plate["Held Item"].cooked:
+		if plate["Item"] and not $EatTimer.time_left:
+			if plate["Item"].item_type == "food":
+				if plate["Item"].can_cook and not plate["Item"].cooked:
 					talk("That's not cooked!")
-				else:
-					plate["Held Item"].player = self
+				elif plate["Item"].can_cook and plate["Item"].burnt:
+					talk("It's burnt!")
+				elif plate["Item"].item_name == item_chosen:
+					plate["Item"].player = self
+					plate["In Use"] = true
 					talk("Thank you!")
 					$EatTimer.start()
-			else:
-				talk("That's not what I ordered.")
+				else:
+					talk("That's not what I ordered.")
 	elif state == "ate":
 			talk("Thanks for the meal! Bye.")
 			if go_home():
@@ -116,7 +120,7 @@ func order():
 
 
 func eat():
-	pick_up(table.remove_item(table.plates[table.nearest_plate(self)]["Held Item"]))
+	pick_up(table.remove_item(plate, "Table"))
 	$AnimationPlayer.play("eat")
 	held_item.eat()
 	state = "eaten"
@@ -142,6 +146,10 @@ func remove_item():
 func go_home():
 	if not door:
 		door = get_tree().get_nodes_in_group("Door")
+		
+		var instance = scene.instance()
+		get_node("/root/Main").add_child(instance)
+		instance.global_position = door[0].global_position
 	if not goto_location(door[0]):
 		return false
 	else:
@@ -163,9 +171,6 @@ func _on_DetectorPlayer_body_exited(body):
 
 
 func _on_EatTimer_timeout():
-	if not table.plates[table.nearest_plate(self)]:
-		pass
-	else:
 		eat()
 
 

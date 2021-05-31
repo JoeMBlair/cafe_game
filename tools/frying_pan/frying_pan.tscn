@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://tools/frying_pan/frying_pan.gd" type="Script" id=1]
+[ext_resource path="res://tools/frying_pan/frying_pan.png" type="Texture" id=2]
+[ext_resource path="res://furniture/chopping_board/select.png" type="Texture" id=3]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 13.4781
+
+[node name="FryingPan" type="Area2D" groups=[
+"Interactable",
+"PickUp",
+]]
+script = ExtResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -4.72039, 1.27961 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="HobUI" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 8, 8 )
+texture = ExtResource( 2 )
+
+[node name="FoodSpots" type="Node2D" parent="."]
+
+[node name="Spot0" type="Node2D" parent="FoodSpots"]
+position = Vector2( -4, -4 )
+
+[node name="Spot1" type="Node2D" parent="FoodSpots"]
+position = Vector2( 4, -4 )
+
+[node name="Spot2" type="Node2D" parent="FoodSpots"]
+position = Vector2( -4, 4 )
+
+[node name="Spot3" type="Node2D" parent="FoodSpots"]
+position = Vector2( 4, 4 )
+
+[node name="Select" type="Sprite" parent="."]
+visible = false
+position = Vector2( -4.15043, -4.27755 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 3 )

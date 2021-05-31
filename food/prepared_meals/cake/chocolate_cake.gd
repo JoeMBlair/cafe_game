@@ -1,19 +1,13 @@
 extends FoodTemplate
 
-var food_name = "Uncooked Chocolate Cake"
-var state = "uncooked"
-var hand
-var cooked = false
-var cut = true
-var held = false
-var type = "PickUp"
-var player
-var cook_time = 3
-var recipe = ["Butter","Chocolate", "Egg", "Flour"]
 
 func _ready():
 	set_item(self)
-
+	item_name = "Chocolate Cake"
+	can_cook = true
+	cook_time = 3
+	valid_slots += ["Oven"]
+	cook_temp = 2
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "eat":
