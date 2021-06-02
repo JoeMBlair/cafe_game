@@ -83,6 +83,7 @@ shape = SubResource( 4 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Bowl" type="Node2D" parent="CanvasLayer"]
+visible = false
 
 [node name="Bowl" type="Sprite" parent="CanvasLayer/Bowl"]
 position = Vector2( 520, 380 )

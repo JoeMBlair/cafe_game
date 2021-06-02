@@ -13,7 +13,7 @@ func _ready():
 	set_up("Mixing Bowl", 4, {"Spot": bowl_slots})
 	
 
-func _process(delta):
+func _process(_delta):
 	if is_open:
 		$CanvasLayer/Bowl/Select.global_position = inv.inventory["Mixing Bowl"][space_select]["Spot"].global_position
 		get_input()
@@ -62,7 +62,7 @@ func use(player):
 #				selected_slot.Item.scale = Vector2(1, 1)
 				player.pick_up(remove_item(selected_slot, "Mixing Bowl"), "Default", player.hand)
 				ui_interact(player)
-		elif add(player, "Mixing Bowl", "add", null, 5):
+		elif add(player, "Mixing Bowl", "add", null):
 			bowl_foods = get_slots("Mixing Bowl", "Item")
 			pass
 			if bowl_foods.size() == 4:
@@ -77,7 +77,7 @@ func use(player):
 			player.pick_up(item, "Default", player.hand)
 
 
-func add(player, location, action, hand = null, scale = 1):
+func add(player, location, action, hand = null):
 	if not is_space(location):
 		return false
 	var item = player.held_item

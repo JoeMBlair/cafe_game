@@ -41,12 +41,8 @@ func copy(slot_item):
 
 func is_space(location = "Default"):
 	return inv.is_space(location)
-#
-func ui_interact(player):
-	pass
-#
 
-	
+
 func mix(location):
 	var ingredients = []
 	var bowl_inventory = get_slots(location, "Item")

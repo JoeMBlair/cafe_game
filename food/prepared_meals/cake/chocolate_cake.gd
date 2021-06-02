@@ -1,4 +1,4 @@
-extends FoodTemplate
+extends FoodBase
 
 
 func _ready():
@@ -9,7 +9,7 @@ func _ready():
 	valid_slots += ["Oven"]
 	cook_temp = 2
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished():
 #	if anim_name == "eat":
 #		player.held_item = null
 #		self.queue_free()

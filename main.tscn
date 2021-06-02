@@ -101,10 +101,11 @@ tile_data = PoolIntArray( 0, 0, 131072, 1, 0, 131073, 2, 0, 131073, 3, 0, 131073
 [node name="Player" parent="Objects" instance=ExtResource( 1 )]
 position = Vector2( -16, -192 )
 
+[node name="Door" parent="." instance=ExtResource( 11 )]
+position = Vector2( 432, 566 )
+
 [node name="Customer" parent="." instance=ExtResource( 10 )]
 position = Vector2( 432, 544 )
-
-[node name="Door" parent="." instance=ExtResource( 11 )]
 
 [node name="FryingPan" parent="." instance=ExtResource( 2 )]
 position = Vector2( 464, 192 )

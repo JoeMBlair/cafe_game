@@ -7,8 +7,8 @@ var inventory = {}
 var in_use = false
 var object
 var inventory_size
-var free_slots = {}
-var taken_slots = {}
+#var free_slots = {}
+#var taken_slots = {}
 
 func _ready():
 #	get_node("/root/Main").add_child(self)
@@ -19,13 +19,13 @@ func set_up(location, size = -1, params = []):
 #	"Default" = location
 	inventory_size = size
 	inventory[location] = {}
-	free_slots[location] = []
-	taken_slots[location] = []
+#	free_slots[location] = []
+#	taken_slots[location] = []
 	
 	for slot in size:
 		inventory[location][slot] = {"Item": null}
 		inventory[location][slot]["Slot Index"] = slot
-		free_slots[location].append(slot)
+#		free_slots[location].append(slot)
 		if params.size() != 0:
 			for param_group in params:
 				inventory[location][slot][param_group] = params[param_group][slot]
@@ -95,7 +95,7 @@ func is_space(location = "Default"):
 			return true
 	return false
 
-func copy(slot_item, location = "Default"):
+func copy(slot_item):
 	pass
 	var item_path = slot_item.filename
 	var scene = load(item_path)

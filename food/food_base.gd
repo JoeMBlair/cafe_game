@@ -1,6 +1,6 @@
 extends ItemBase
 
-class_name FoodTemplate
+class_name FoodBase
 
 export var cooked = false
 export var cut = false
@@ -16,14 +16,6 @@ func _ready():
 	item_type = "food"
 	valid_slots += ["Mixing Bowl", "Fridge"]
 
-func _process(delta):
-	pass
-#	if item:
-#		if item.held:
-#			item.global_position = item.hand.global_position
-#		else:
-#			item.global_position = item.global_position
-
 
 func cut():
 	item.get_node("AnimatedSprite").animation = "cut"
@@ -33,17 +25,19 @@ func cut():
 func cook():
 	item.cooked = true
 	item.get_node("AnimatedSprite").animation = "cooked"
-#	item.food_name = String(item.food_name).replace("Uncooked ", "")
+
 
 func burn():
 	item.burnt = true
 	item.modulate = Color(0.2, 0.2, 0.2, 1)
+
 
 func eat():
 	item.get_node("AnimationPlayer").play("eat")
 	yield(get_tree().create_timer(1), "timeout")
 	item.queue_free()
 	self.queue_free()
+
 
 func get_stats(food):
 	var food_name = food.item_name
@@ -58,6 +52,7 @@ func get_stats(food):
 		else:
 			food_name = "Uncut " + food_name
 	return food_name
+
 
 func set_vars(item):
 	if item.cooked:

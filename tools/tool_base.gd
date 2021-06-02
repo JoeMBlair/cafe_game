@@ -11,7 +11,7 @@ var inv = preload("res://inventory.gd").new()
 func _ready():
 	$AnimatedSprite.add_child(inv)
 
-func _process(delta):
+func _process(_delta):
 	glo_pos = self.global_position
 	if is_open:
 		var selected_spot = get_item_slot(space_select)

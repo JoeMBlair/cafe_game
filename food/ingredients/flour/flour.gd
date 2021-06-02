@@ -1,4 +1,4 @@
-extends FoodTemplate
+extends FoodBase
 
 
 func _ready():

@@ -59,7 +59,7 @@ func cook():
 
 
 
-func add(player, location, action, hand = null):
+func add(player, location, action):
 	if not player.held_item:
 		return false
 	var held_item = player.held_item

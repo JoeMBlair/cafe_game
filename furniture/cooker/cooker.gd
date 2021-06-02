@@ -16,12 +16,25 @@ func _ready():
 	set_up("Oven", 1)
 
 
-func _process(delta):
+func _process(_delta):
 	if ui_open:
+		
 		if ui_selected == 0:
-			$CanvasLayer/CookerUI/Selector.position.x = -370
+			$CanvasLayer/CookerUI/Selector.position.x = -40
+			if oven_temp == 3:
+				$CanvasLayer/CookerUI/Selector/Indicator.text = "  >"
+			elif oven_temp == 0:
+				$CanvasLayer/CookerUI/Selector/Indicator.text = "<  "
+			else:
+				$CanvasLayer/CookerUI/Selector/Indicator.text = "< >"
 		else:
-			$CanvasLayer/CookerUI/Selector.position.x = 20
+			$CanvasLayer/CookerUI/Selector.position.x = 350
+			if hob_temp == 3:
+				$CanvasLayer/CookerUI/Selector/Indicator.text = "  >"
+			elif hob_temp == 0:
+				$CanvasLayer/CookerUI/Selector/Indicator.text = "<  "
+			else: 
+				$CanvasLayer/CookerUI/Selector/Indicator.text = "< >"
 			
 		if Input.is_action_just_pressed("move_up"):
 			if ui_selected == 0:
@@ -42,11 +55,15 @@ func _process(delta):
 					hob_temp -= 1
 					hob_ui.text = "| Hob: %s" % temp[hob_temp]
 		if Input.is_action_just_pressed("move_left"):
-			if ui_selected >= 0:
-				ui_selected -= 1
+			if ui_selected == 1:
+				ui_selected = 0
+			else:
+				ui_selected = 1
 		if Input.is_action_just_pressed("move_right"):
-			if ui_selected < 1:
-				ui_selected += 1
+			if ui_selected == 1:
+				ui_selected = 0
+			else:
+				ui_selected = 1
 
 
 func use(player):

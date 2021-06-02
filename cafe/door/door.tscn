@@ -1,9 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://cafe/door/door.gd" type="Script" id=1]
+[ext_resource path="res://cafe/door/door.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 48, 10 )
+extents = Vector2( 24.015, 29.4476 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [node name="Door" type="Area2D" groups=[
 "Door",
@@ -14,15 +23,11 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -32.0
-margin_top = -57.0
-margin_right = 64.0
-margin_bottom = -41.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 16, -47 )
+position = Vector2( 0, -31 )
 shape = SubResource( 1 )
+
+[node name="Door" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -31 )
+scale = Vector2( 4, 4 )
+frames = SubResource( 2 )

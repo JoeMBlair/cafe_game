@@ -68,6 +68,7 @@ shape = SubResource( 2 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Shelf" type="Node2D" parent="CanvasLayer"]
+visible = false
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CanvasLayer/Shelf"]
 position = Vector2( 522, 356.651 )
