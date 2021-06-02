@@ -1,37 +1,29 @@
 extends ApplianceBase
 
-var shelf_spaces = []
 var is_open = false
 var space_select = 0
 var infinite = true
-var spaces_left : int
-#var fridge_inventory
 var just_opened = false
 var user
 
 func _ready():
-	object = self
+#	object = self
 	var shelf_spots = $CanvasLayer/Shelf/ShelfSpaces.get_children()	
-	set_up("Fridge", shelf_spots.size(), {"Spot": shelf_spots})
+	set_up("Default", shelf_spots.size(), {"Spot": shelf_spots})
 	
 	$CanvasLayer/Shelf.visible = false
-#	spaces_left = shelf_spots.size()
 #	for spot in shelf_spots:
-#		shelf_spaces.append(spot)
 
-	for slot in inventory["Fridge"]:
-		var item = inventory["Fridge"][slot]["Spot"]
-		var items = item.get_children()
-		print(items[0].name)
-		if items.size() == 2:
-			pick_up(items[1], "Fridge")
-			items[1].scale = Vector2(3,3)
+	for slot in get_slots("Default", "Spot", null, "all"):
+		var items = slot.get_children()
+		if items.size() == 1:
+			pick_up(items[0], "Default")
 
 
 func _process(delta):
 	if is_open:
 		pass
-		$CanvasLayer/Shelf/Select.global_position = inventory["Fridge"][space_select]["Spot"].global_position
+		$CanvasLayer/Shelf/Select.global_position = inv.inventory["Default"][space_select]["Spot"].global_position
 		if Input.is_action_just_pressed("move_right"):
 				if space_select < 11:
 					space_select += 1
@@ -46,39 +38,49 @@ func _process(delta):
 					space_select -= 4
 #		if Input.is_action_just_pressed("use") and not just_opened:
 #			open_ui(get_node("/root/Main/Objects/Player"))
+		if not just_opened:
+			if Input.is_action_just_pressed("pick_up"):
+				var user = get_tree().get_nodes_in_group("Player")
+				use(user[0])
+			if Input.is_action_just_pressed("use"):
+				var user = get_tree().get_nodes_in_group("Player")
+				ui_interact(user[0])
 		just_opened = false
-		if Input.is_action_just_pressed("pick_up"):
-			pass
+		
 
 func ui_interact(player):
-	user = player
 	if not $CanvasLayer/Shelf.visible:
 		$CanvasLayer/Shelf.visible = true
-		player.disable_input += ["Move"]
+		player.disable_input += ["Move", "Pick Up", "Interact"]
 		is_open = true
 		just_opened = true		
 	else:
 		$CanvasLayer/Shelf.visible = false
 		player.disable_input.erase("Move")
+		player.disable_input.erase("Pick Up")
+		player.disable_input.erase("Interact")
 		is_open = false
 
 
 func use(player):
-	var selected_slot = inventory["Fridge"][space_select]
+	var selected_slot = get_item_slot(space_select)
 	if is_open and selected_slot.Item and not player.held_item:
-		player.pick_up(remove_food(inventory["Fridge"][space_select], "Fridge"))
-		ui_interact(user)
-	elif player.held_item:
-		if add(player, "Fridge", "add"):
+		if infinite:
+			player.pick_up(copy(selected_slot.Item))
+		else:
+			player.pick_up(remove_item(selected_slot))
+		ui_interact(player)
+	elif player.held_item and is_space():
+		if add(player, "Default", "add"):
 			pass
 
 
 func add(player, location, action):
 	var item = player.held_item
-	if item.valid_item(item, location, action):
-		var player_food = player.remove_item()
-		pick_up(player_food, location)	
-		item.scale = Vector2(3, 3)
+	if item.valid_item(item, "Fridge", action):
+		var player_food = player.remove_item(player.held_slot)
+		pick_up(player_food, location)
+#		item.scale = Vector2(3, 3)
 		return true
 	return false
 
@@ -90,5 +92,5 @@ func copy_item(item):
 func remove_food(item_spot, location):
 	var item = item_spot.Item
 	remove_item(item_spot, location)
-	item.scale = Vector2(1, 1)
+#	item.scale = Vector2(1, 1)
 	return item

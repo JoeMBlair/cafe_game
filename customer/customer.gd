@@ -10,6 +10,12 @@ var item_chosen
 var player_in_range = false
 var held_item
 onready var scene = load("res://customer/customer.tscn")
+var inv = preload("res://inventory.tscn").instance()
+var spawn_rate_normal = [1, 1, 1, 1, 1, 1, 1, 2, 2, 3]
+var spawn_rate_extreme = [1, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6]
+var spawn_rate = spawn_rate_normal
+
+
 
 # Objects
 var door
@@ -19,14 +25,34 @@ var chairs
 var closet_chair
 var chosen_chair
 
+func valid_action(user):
+	var user_item = user.held_item
+	if user_item:
+		if user_item.can_cook:
+			if user_item.cooked:
+				return true
+			else:
+				return false
+		else:
+			return true
+	else:
+		return true
 
 
 func debug():
 	if Input.is_action_just_pressed("Debug"):
-		pass
-
-
+		var user = get_tree().get_nodes_in_group("Player")
+		if valid_action(user[0]):
+			if spawn_rate == spawn_rate_normal:
+				spawn_rate = spawn_rate_extreme
+				user[0].modulate = Color.red
+			else:
+				spawn_rate = spawn_rate_normal
+				user[0].modulate = Color.white
+					
 func _ready():
+	self.add_child(inv)
+	inv.set_up("Default", 1)
 	chairs = get_tree().get_nodes_in_group("Chair")
 	if not choose_chair():
 		state = "wait"
@@ -35,6 +61,7 @@ func _ready():
 
 
 func _process(_delta):
+	debug()
 	if state == "wait":
 		if choose_chair():
 			state = "goto_chair"
@@ -57,7 +84,7 @@ func _process(_delta):
 				elif plate["Item"].can_cook and plate["Item"].burnt:
 					talk("It's burnt!")
 				elif plate["Item"].item_name == item_chosen:
-					plate["Item"].player = self
+#					plate["Item"].player = self
 					plate["In Use"] = true
 					talk("Thank you!")
 					$EatTimer.start()
@@ -120,9 +147,11 @@ func order():
 
 
 func eat():
-	pick_up(table.remove_item(plate, "Table"))
+	plate["In Use"] = false
+	inv.pick_up(table.remove_item(plate), "Default", $DetectorChair)
 	$AnimationPlayer.play("eat")
-	held_item.eat()
+	var food = inv.get_item_slot(0)
+	food.Item.eat()
 	state = "eaten"
 
 func pick_up(item):
@@ -145,11 +174,20 @@ func remove_item():
 
 func go_home():
 	if not door:
+		randomize()
+		var amount = spawn_rate[rand_range(0, spawn_rate.size())]
 		door = get_tree().get_nodes_in_group("Door")
 		
-		var instance = scene.instance()
-		get_node("/root/Main").add_child(instance)
-		instance.global_position = door[0].global_position
+		for i in amount:
+#			print("before yield")
+#			yield(get_tree().create_timer(0.5), "timeout")
+#			print("after yeild")
+			var instance = scene.instance()
+			get_node("/root/Main").add_child(instance)
+			instance.global_position = door[0].global_position
+			instance.global_position.x += rand_range(10, 30)
+			instance.global_position.y += rand_range(10, 30)
+#			yield(get_tree().create_timer(.5), "timeout")
 	if not goto_location(door[0]):
 		return false
 	else:

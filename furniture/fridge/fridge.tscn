@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://furniture/fridge/fridge.png" type="Texture" id=1]
 [ext_resource path="res://furniture/fridge/fridge.gd" type="Script" id=2]
 [ext_resource path="res://furniture/fridge/fridge_inside.jpg" type="Texture" id=3]
 [ext_resource path="res://furniture/fridge/select.png" type="Texture" id=4]
 [ext_resource path="res://furniture/fridge/fridge_inside_2.jpg" type="Texture" id=5]
+[ext_resource path="res://food/prepared_meals/cake/cake.tscn" type="PackedScene" id=6]
 [ext_resource path="res://food/ingredients/celery/celery.tscn" type="PackedScene" id=7]
 [ext_resource path="res://food/ingredients/butter/butter.tscn" type="PackedScene" id=8]
 [ext_resource path="res://food/ingredients/egg/egg.tscn" type="PackedScene" id=9]
@@ -14,6 +15,8 @@
 [ext_resource path="res://food/ingredients/mustard/mustard.tscn" type="PackedScene" id=13]
 [ext_resource path="res://food/ingredients/mayo/mayo.tscn" type="PackedScene" id=14]
 [ext_resource path="res://food/ingredients/flour/flour.tscn" type="PackedScene" id=15]
+[ext_resource path="res://food/prepared_meals/cake/chocolate_cake.tscn" type="PackedScene" id=16]
+[ext_resource path="res://food/prepared_meals/potato_salad/potato_salad.tscn" type="PackedScene" id=17]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -34,10 +37,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=4]
-radius = 36.8782
-
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ ExtResource( 4 ) ],
 "loop": true,
@@ -45,10 +45,11 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 12, 6 )
 
 [node name="Fridge" type="Area2D" groups=[
+"Fridge",
 "Interactable",
 ]]
 script = ExtResource( 2 )
@@ -67,7 +68,6 @@ shape = SubResource( 2 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Shelf" type="Node2D" parent="CanvasLayer"]
-visible = false
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CanvasLayer/Shelf"]
 position = Vector2( 522, 356.651 )
@@ -77,143 +77,119 @@ frame = 1
 
 [node name="ShelfSpaces" type="Node2D" parent="CanvasLayer/Shelf"]
 
-[node name="ShelfSpot_R1C1" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+[node name="ShelfSpot_R1C1" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
 position = Vector2( 398, 166 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C1"]
-shape = SubResource( 4 )
 
 [node name="Flour" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C1" instance=ExtResource( 15 )]
 
-[node name="ShelfSpot_R1C2" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 482, 166 )
+[node name="ShelfSpot_R1C2" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 478, 166 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C2"]
-shape = SubResource( 4 )
 
 [node name="Egg" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C2" instance=ExtResource( 9 )]
 
-[node name="ShelfSpot_R1C3" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 566, 166 )
+[node name="ShelfSpot_R1C3" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 562, 166 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C3"]
-shape = SubResource( 4 )
+[node name="Butter" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C3" instance=ExtResource( 8 )]
 
-[node name="Sugar" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C3" instance=ExtResource( 10 )]
-
-[node name="ShelfSpot_R1C4" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 650, 166 )
+[node name="ShelfSpot_R1C4" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 642, 166 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C4"]
-shape = SubResource( 4 )
+[node name="Sugar" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C4" instance=ExtResource( 10 )]
 
-[node name="Butter" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C4" instance=ExtResource( 8 )]
-
-[node name="ShelfSpotR2C1" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 398, 286 )
+[node name="ShelfSpot_R2C1" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 398, 282 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C1"]
-shape = SubResource( 4 )
+[node name="Chocolate" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C1" instance=ExtResource( 11 )]
 
-[node name="Chocolate" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C1" instance=ExtResource( 11 )]
-
-[node name="ShelfSpotR2C2" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 482, 286 )
+[node name="ShelfSpot_R2C2" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 478, 282 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C2"]
-shape = SubResource( 4 )
+[node name="Cake" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C2" instance=ExtResource( 6 )]
 
-[node name="Potato" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C2" instance=ExtResource( 12 )]
-
-[node name="ShelfSpotR2C3" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 566, 286 )
+[node name="ShelfSpot_R2C3" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 562, 282 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C3"]
-shape = SubResource( 4 )
+[node name="ChocolateCake" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C3" instance=ExtResource( 16 )]
 
-[node name="Mayo" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C3" instance=ExtResource( 14 )]
-
-[node name="ShelfSpotR2C4" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 650, 286 )
+[node name="ShelfSpot_R2C4" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 642, 282 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C4"]
-shape = SubResource( 4 )
+[node name="PotatoSalad" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C4" instance=ExtResource( 17 )]
 
-[node name="Mustard" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR2C4" instance=ExtResource( 13 )]
-
-[node name="ShelfSpotR3C1" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 398, 418 )
+[node name="ShelfSpot_R3C1" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 398, 414 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C1"]
-shape = SubResource( 4 )
+[node name="Celery" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C1" instance=ExtResource( 7 )]
 
-[node name="Celery" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C1" instance=ExtResource( 7 )]
-
-[node name="ShelfSpotR3C2" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 482, 418 )
+[node name="ShelfSpot_R3C2" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 478, 414 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C2"]
-shape = SubResource( 4 )
+[node name="Potato" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C2" instance=ExtResource( 12 )]
 
-[node name="Egg" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C2" instance=ExtResource( 9 )]
-
-[node name="ShelfSpotR3C3" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 566, 418 )
+[node name="ShelfSpot_R3C3" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 562, 414 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C3"]
-shape = SubResource( 4 )
+[node name="Mustard" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C3" instance=ExtResource( 13 )]
 
-[node name="Egg" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C3" instance=ExtResource( 9 )]
-
-[node name="ShelfSpotR3C4" type="Area2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 650, 418 )
+[node name="ShelfSpot_R3C4" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
+position = Vector2( 642, 414 )
+scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C4"]
-shape = SubResource( 4 )
-
-[node name="Egg" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpotR3C4" instance=ExtResource( 9 )]
+[node name="Mayo" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C4" instance=ExtResource( 14 )]
 
 [node name="Select" type="AnimatedSprite" parent="CanvasLayer/Shelf"]
 position = Vector2( 398, 167 )
 scale = Vector2( 2.75, 2.75 )
-frames = SubResource( 5 )
+frames = SubResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 38 )
-shape = SubResource( 6 )
+shape = SubResource( 5 )

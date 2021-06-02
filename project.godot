@@ -67,7 +67,12 @@ _global_script_classes=[ {
 "base": "ItemBase",
 "class": "FoodTemplate",
 "language": "GDScript",
-"path": "res://food/food_item.gd"
+"path": "res://food/food_base.gd"
+}, {
+"base": "Node2D",
+"class": "InventoryClass",
+"language": "GDScript",
+"path": "res://inventory.gd"
 }, {
 "base": "Decorator",
 "class": "Inverter",
@@ -117,6 +122,7 @@ _global_script_class_icons={
 "Decorator": "",
 "FoodRecipes": "",
 "FoodTemplate": "",
+"InventoryClass": "",
 "Inverter": "res://addons/behaviour_tree/icons/inverter.svg",
 "ItemBase": "",
 "Leaf": "res://addons/behaviour_tree/icons/action.svg",
@@ -229,6 +235,11 @@ exit_interactable={
 use={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
+ ]
+}
+inventory={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":73,"unicode":0,"echo":false,"script":null)
  ]
 }
 

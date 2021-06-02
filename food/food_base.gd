@@ -2,16 +2,17 @@ extends ItemBase
 
 class_name FoodTemplate
 
-var cooked = false
-var cut = false
+export var cooked = false
+export var cut = false
 var cook_time = 1
 var can_cook = false
 var can_cut = false
 var cook_temp = 1
-var burnt = false
+export var burnt = false
 
 func _ready():
 	set_item(self)
+	set_vars(self)
 	item_type = "food"
 	valid_slots += ["Mixing Bowl", "Fridge"]
 
@@ -34,6 +35,9 @@ func cook():
 	item.get_node("AnimatedSprite").animation = "cooked"
 #	item.food_name = String(item.food_name).replace("Uncooked ", "")
 
+func burn():
+	item.burnt = true
+	item.modulate = Color(0.2, 0.2, 0.2, 1)
 
 func eat():
 	item.get_node("AnimationPlayer").play("eat")
@@ -55,8 +59,16 @@ func get_stats(food):
 			food_name = "Uncut " + food_name
 	return food_name
 
+func set_vars(item):
+	if item.cooked:
+		cook()
+	if item.cut:
+		cut()
+	if item.burnt:
+		burn()
+
+
 func valid_item(object, location, action):
-	
 	if object.item_type == "food":
 		if object.valid_slots.has(location):
 			if action == "cut" and not object.cut:

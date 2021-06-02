@@ -6,8 +6,11 @@ var velocity = Vector2.ZERO
 var direction = "down"
 var state = "idle"
 var in_zone = false
+onready var hand = get_node("Hand")
+var inv_location = "Default"
 #var item
 var held_item
+var held_slot
 #var actions = []
 var pick_ups = []
 var interactables = []
@@ -16,7 +19,11 @@ var glo_pos
 var glo_pos_item
 onready var body_sprite = get_node("AnimatedSprite")
 onready var anim_player = get_node("AnimationPlayer")
+var inv = preload("res://inventory.tscn").instance()
 
+func _ready():
+	self.add_child(inv)
+	inv.set_up(inv_location, 1)
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -63,7 +70,8 @@ func get_input():
 				nearest_interactable.ui_interact(self)
 		if Input.is_action_just_pressed("Drop"):
 			if held_item != null:
-				remove_item()
+				
+				remove_item(held_slot)
 		
 		if Input.is_action_just_pressed("eat") and held_item != null:
 			if held_item.state == "cooked":
@@ -85,7 +93,7 @@ func action():
 #		Interact with objects of pick up
 	var nearest_pick_up = nearest_action(pick_ups)
 	var nearest_interactable = nearest_action(interactables)
-	if nearest_pick_up and not held_item and nearest_pick_up.player != self:
+	if nearest_pick_up and not held_item:
 		pick_up(nearest_pick_up)
 	elif nearest_interactable:
 		nearest_interactable.use(self)
@@ -94,8 +102,11 @@ func action():
 func debug():
 	if Input.is_action_just_pressed("Debug"):
 		if held_item:
-			held_item.state = "cooked"
-			held_item.get_node("AnimatedSprite").animation = "cooked"
+			held_item.cook()
+	if Input.is_action_just_pressed("inventory"):
+		var fridge = get_tree().get_nodes_in_group("Fridge")
+		fridge[0].ui_interact(self)
+	
 
 func eat():
 	$AnimationPlayer.play("eat")
@@ -111,28 +122,42 @@ func nearest_action(actions):
 		return nearest_action
 	return false
 
-
-func remove_item():
-	var item = held_item
-	item.get_parent().remove_child(item)
-	get_node("/root/Main").add_child(item)
-	item.global_position = $Hand.global_position
-	item.held = false
-#	item.hand = null
-	item.player = null
+func remove_item(slot):
+	var held_object = inv.remove_item(slot)
 	held_item = null
-	return item
+	held_slot = null
+	return held_object
 	
+
+
+#func remove_item_old():
+#	var item = held_item
+#	item.get_parent().remove_child(item)
+#	get_node("/root/Main").add_child(item)
+#	item.global_position = $Hand.global_position
+#	item.held = false
+##	item.hand = null
+#	item.player = null
+#	held_item = null
+#	return item
+	
+func pick_up(item, location = "Default", player_hand = hand, slot = -1):
+	inv.pick_up(item, location, player_hand, slot)
+	for slot in inv.get_slots(location):
+		held_slot = slot
+		held_item = slot.Item
+
+
 # warning-ignore:shadowed_variable
-func pick_up(item):
-	item.held = true
-	item.player = self
-#	item.hand = get_node("Hand")
-	held_item = item
-	item.get_parent().remove_child(item)
-	$Hand.add_child(item)
-	item.position = Vector2(0, 0)
-	pick_ups.erase(item)
+#func pick_up_old(item):
+#	item.held = true
+#	item.player = self
+##	item.hand = get_node("Hand")
+#	held_item = item
+#	item.get_parent().remove_child(item)
+#	$Hand.add_child(item)
+#	item.position = Vector2(0, 0)
+#	pick_ups.erase(item)
 		
 #	Checks for objects to interact with or pick up and adds them to an action 
 #	queue or removes them if out of range
