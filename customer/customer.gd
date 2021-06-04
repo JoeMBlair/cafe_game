@@ -49,10 +49,11 @@ func debug():
 			else:
 				spawn_rate = spawn_rate_normal
 				user[0].modulate = Color.white
-					
+
+
 func _ready():
 	self.add_child(inv)
-	inv.set_up("Default", 1)
+	inv.set_up("Customer", 1)
 	chairs = get_tree().get_nodes_in_group("Chair")
 	if not choose_chair():
 		state = "wait"
@@ -84,7 +85,6 @@ func _process(_delta):
 				elif plate["Item"].can_cook and plate["Item"].burnt:
 					talk("It's burnt!")
 				elif plate["Item"].item_name == item_chosen:
-#					plate["Item"].player = self
 					plate["In Use"] = true
 					talk("Thank you!")
 					$EatTimer.start()
@@ -148,11 +148,12 @@ func order():
 
 func eat():
 	plate["In Use"] = false
-	inv.pick_up(table.remove_item(plate), "Default", $DetectorChair)
+	inv.pick_up(table.remove_item(plate), table.location_name(), $DetectorChair)
 	$AnimationPlayer.play("eat")
 	var food = inv.get_item_slot(0)
 	food.Item.eat()
 	state = "eaten"
+
 
 func pick_up(item):
 	if not item:
@@ -179,15 +180,11 @@ func go_home():
 		door = get_tree().get_nodes_in_group("Door")
 		
 		for i in amount:
-#			print("before yield")
-#			yield(get_tree().create_timer(0.5), "timeout")
-#			print("after yeild")
 			var instance = scene.instance()
 			get_node("/root/Main").add_child(instance)
 			instance.global_position = door[0].global_position
 			instance.global_position.x += rand_range(10, 30)
 			instance.global_position.y += rand_range(10, 30)
-#			yield(get_tree().create_timer(.5), "timeout")
 	if not goto_location(door[0]):
 		return false
 	else:
@@ -216,4 +213,3 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "eat":
 		state = "ate"
 		closet_chair.in_use = false
-	pass # Replace with function body.

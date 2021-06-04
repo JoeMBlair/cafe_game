@@ -2,7 +2,8 @@ extends FoodBase
 
 func _ready():
 	set_item(self)
-	item_name = "Egg"
+	item_name = "Omelette"
 	can_cook = true
 	cook_time = 2
-	valid_spaces += ["Frying Pan", "Pot"]
+	cook_temp = 2
+	valid_spaces += ["Frying Pan"]

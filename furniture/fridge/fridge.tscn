@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://furniture/fridge/fridge.png" type="Texture" id=1]
 [ext_resource path="res://furniture/fridge/fridge.gd" type="Script" id=2]
@@ -13,7 +13,6 @@
 [ext_resource path="res://food/ingredients/chocolate/chocolate.tscn" type="PackedScene" id=11]
 [ext_resource path="res://food/ingredients/potato/potato.tscn" type="PackedScene" id=12]
 [ext_resource path="res://food/ingredients/mustard/mustard.tscn" type="PackedScene" id=13]
-[ext_resource path="res://food/ingredients/mayo/mayo.tscn" type="PackedScene" id=14]
 [ext_resource path="res://food/ingredients/flour/flour.tscn" type="PackedScene" id=15]
 [ext_resource path="res://food/prepared_meals/cake/chocolate_cake.tscn" type="PackedScene" id=16]
 [ext_resource path="res://food/prepared_meals/potato_salad/potato_salad.tscn" type="PackedScene" id=17]
@@ -183,8 +182,6 @@ scale = Vector2( 3, 3 )
 __meta__ = {
 "_edit_group_": true
 }
-
-[node name="Mayo" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C4" instance=ExtResource( 14 )]
 
 [node name="Select" type="AnimatedSprite" parent="CanvasLayer/Shelf"]
 position = Vector2( 398, 167 )

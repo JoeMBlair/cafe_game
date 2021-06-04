@@ -3,126 +3,146 @@ extends Node2D
 class_name InventoryClass
 
 var inventory = {}
-#var type = "Interactable"
-var in_use = false
 var object
-var inventory_size
-#var free_slots = {}
-#var taken_slots = {}
+var default_location
 
 func _ready():
-#	get_node("/root/Main").add_child(self)
 	pass
 
 
 func set_up(location, size = -1, params = []):
-#	"Default" = location
-	inventory_size = size
+	default_location = location
 	inventory[location] = {}
-#	free_slots[location] = []
-#	taken_slots[location] = []
 	
-	for slot in size:
-		inventory[location][slot] = {"Item": null}
-		inventory[location][slot]["Slot Index"] = slot
-#		free_slots[location].append(slot)
+	for space in size:
+		inventory[location][space] = {"Item": null}
+		inventory[location][space]["Space Index"] = space
 		if params.size() != 0:
 			for param_group in params:
-				inventory[location][slot][param_group] = params[param_group][slot]
+				inventory[location][space][param_group] = params[param_group][space]
 
 
-func pick_up(item, location = "Default", hand = null, slot = -1):
+func pick_up(item, location = default_location, hand = null, space_index = -1):
+	if not is_space(location):
+		return false
 	if not item:
 		return false
-#	if not is_space(location):
-#		return false
 	item.held = true
 	item.position = Vector2(0, 0)	
 	var item_location
-	var free_slots = get_slots(location, null, null, "free")
-	var chosen_slot	
+	var free_spaces = get_spaces(location, null, null, "free")
+	var chosen_index
 	
-	if free_slots.size() == 0:
+#	Checks if there's space in inventory
+	if free_spaces.size() == 0:
 		return false
-	if slot != -1:
-		item_location = inventory[location][slot]["Spot"]
-		chosen_slot = slot
+#	If index is specified then get parent of space
+	if space_index != -1:
+		item_location = inventory[location][space_index]["Spot"]
+		chosen_index = space_index
 		
+#	If hand isn't specified then set space to 
 	elif not hand:
-		item_location = free_slots[0]["Spot"]
-		chosen_slot = free_slots[0]["Slot Index"]
+		item_location = free_spaces[0]["Spot"]
+		chosen_index = free_spaces[0]["Space Index"]
 	else:
 		item_location = hand
-		chosen_slot = free_slots[0]["Slot Index"]
+		chosen_index = free_spaces[0]["Space Index"]
 		
-
 	item.get_parent().remove_child(item)
 	item_location.add_child(item)
-	inventory[location][chosen_slot]["Item"] = item
+	inventory[location][chosen_index]["Item"] = item
 
 
-func get_slots(location = "Default", extra = null, extra2 = null, get_type = "used"):
+func add(player, location, action, hand):
+	if not is_space(location):
+		return false
+	if not player.held_item:
+		return false
+	var held_item = player.held_item
+	if held_item.valid_item(held_item, location, action):
+		var player_food = player.remove_item(player.held_space)
+		pick_up(player_food, location, hand)
+		return true
+	return false
+
+
+func get_spaces(location = default_location, extra = null, extra2 = null, get_type = "used"):
 	var item_array = []
-	for slot in inventory[location]:
+	for space in inventory[location]:
 		if get_type == "all":
 			if extra:
-				item_array.append(inventory[location][slot][extra])
+				item_array.append(inventory[location][space][extra])
 			else:
-				item_array.append(inventory[location][slot])
+				item_array.append(inventory[location][space])
 		elif get_type == "free":
-			if extra and  not inventory[location][slot][extra]:
-				item_array.append(inventory[location][slot][extra])
-			elif not inventory[location][slot]["Item"]:
-				item_array.append(inventory[location][slot])
+			if extra and  not inventory[location][space][extra]:
+				item_array.append(inventory[location][space][extra])
+			elif not inventory[location][space]["Item"]:
+				item_array.append(inventory[location][space])
 		elif get_type == "used":
-			if extra and inventory[location][slot][extra]:
-				item_array.append(inventory[location][slot][extra])
-			elif inventory[location][slot]["Item"]:
-				item_array.append(inventory[location][slot])
+			if extra and inventory[location][space][extra]:
+				item_array.append(inventory[location][space][extra])
+			elif inventory[location][space]["Item"]:
+				item_array.append(inventory[location][space])
 	if item_array.size() == 0:
 		return []
-#	item_array.sort()
 	return item_array
 
 
-func get_item_slot(slot_index = -1, location = "Default"):
-	return inventory[location][slot_index]
+func item_space(space_index = -1, location = default_location):
+	return inventory[location][space_index]
 
 
-func is_space(location = "Default"):
-	for slot in inventory[location]:
-		if not inventory[location][slot]["Item"]:
+func location_name():
+	return default_location
+
+
+func is_space(location = default_location):
+	for space in inventory[location]:
+		if not inventory[location][space]["Item"]:
 			return true
 	return false
 
-func copy(slot_item):
-	pass
-	var item_path = slot_item.filename
-	var scene = load(item_path)
-	var item_copy = scene.instance()
-	item_copy.set_vars(slot_item)
+
+func inv_size(location = default_location):
+	return inventory[location].size()
+
+
+func copy(space_item):
+	var item_path = space_item.filename
+	var item_copy = load(item_path).instance()
+	item_copy.set_vars(space_item)
 	get_node("/root/Main").add_child(item_copy)
 	return item_copy
 
-func remove_item(slot, location = "Default"):
-	var item = slot.Item
+
+func remove_item(space, location = default_location, hand = null):
+	var item = space.Item
+	var drop_location
 	item.held = false
-	var drop_location = item.global_position
-	var slot_index = slot["Slot Index"]
-	inventory[location][slot_index]["Item"] = null
+	if hand:
+		randomize()
+		drop_location = hand.global_position
+		drop_location.x += rand_range(-20, 20)
+		drop_location.y += rand_range(-20, 20)
+	else:
+		drop_location = item.global_position
+	var space_index = space["Space Index"]
+	inventory[location][space_index]["Item"] = null
 	item.get_parent().remove_child(item)
 	get_node("/root/Main").add_child(item)
 	item.global_position = drop_location
 	return item
 
 
-func has_item(item, location = "Default"):
+func has_item(item, location = default_location):
 	for inv_item in inventory[location]:
 		if inv_item.Item == item:
-			return inventory[location][inv_item["Slot Index"]]
+			return inventory[location][inv_item["space Index"]]
 	return false
 
 
-func delete(slot, location = "Default"):
-	var item = remove_item(slot, location)
+func delete(space, location = default_location):
+	var item = remove_item(space, location)
 	item.queue_free()

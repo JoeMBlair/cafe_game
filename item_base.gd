@@ -6,9 +6,8 @@ var item
 var item_name
 var item_type
 var held = false
-#var player
 var type = "PickUp"
-var valid_slots = []
+var valid_spaces = []
 
 
 func _process(_delta):
@@ -17,18 +16,14 @@ func _process(_delta):
 
 func set_item(new_item):
 	item = new_item
-	
 
+func use(player):
+	pass
 
-#func delete(slot, location):
-##	var item = remove_item(slot, location)
-#	item.queue_free()
-#	pass
-	
 func valid_item(object, location, action):
-	if object.valid_slots.has(location):
+	if object.valid_spaces.has(location):
 		if action == "add":
 			return true
 		else:
 			return false
-		
+

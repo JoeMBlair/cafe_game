@@ -14,7 +14,7 @@ func _ready():
 	set_item(self)
 	set_vars(self)
 	item_type = "food"
-	valid_slots += ["Mixing Bowl", "Fridge"]
+	valid_spaces += ["Mixing Bowl", "Fridge"]
 
 
 func cut():
@@ -25,6 +25,7 @@ func cut():
 func cook():
 	item.cooked = true
 	item.get_node("AnimatedSprite").animation = "cooked"
+	item.modulate = Color(1, 1 , 1, 1)
 
 
 func burn():
@@ -65,7 +66,7 @@ func set_vars(item):
 
 func valid_item(object, location, action):
 	if object.item_type == "food":
-		if object.valid_slots.has(location):
+		if object.valid_spaces.has(location):
 			if action == "cut" and not object.cut:
 				return true
 			elif action == "cook" and not object.cooked:

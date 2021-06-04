@@ -8,4 +8,4 @@ func _ready():
 	can_cook = true
 	cook_time = 2
 	cook_temp = 2
-	valid_slots += ["Oven"]
+	valid_spaces += ["Oven"]
