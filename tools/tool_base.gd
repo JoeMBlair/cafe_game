@@ -17,6 +17,8 @@ var ui_scale = Vector2(15, 15)
 
 func _ready():
 	self.add_child(inv)
+	has_ui = true
+	
 
 
 func _process(_delta):

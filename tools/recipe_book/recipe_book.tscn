@@ -55,6 +55,7 @@ __meta__ = {
 }
 
 [node name="BookUI" type="AnimatedSprite" parent="CanvasLayer"]
+visible = false
 position = Vector2( 256, 150 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 3 )

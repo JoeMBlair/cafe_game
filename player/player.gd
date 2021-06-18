@@ -202,7 +202,7 @@ func get_input():
 		if Input.is_action_just_released("move_up"):
 #			direction.y = 0
 			inputs_held.erase("up")
-		print(inputs_held)
+#		print(inputs_held)
 		
 		if inputs_held.size() == 0:
 			direction = Vector2.ZERO
@@ -238,7 +238,7 @@ func get_input():
 			
 	if not disable_input.has("Use"):
 		if Input.is_action_just_pressed("use"):
-			if held_item:
+			if held_item and held_item.has_ui:
 				held_item.ui_interact(self)
 			else:
 				var nearest_interactable = nearest_action(valid_actions("Interact"))			

@@ -6,6 +6,7 @@ var item
 var item_name
 var item_type
 var held = false
+var has_ui = false
 var type = "PickUp"
 var valid_spaces = []
 var detect = true
