@@ -16,7 +16,8 @@ var spawn_rate_normal = [1, 1, 1, 1, 1, 1, 1, 2, 2, 3]
 var spawn_rate_extreme = [1, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6]
 var spawn_rate = spawn_rate_normal
 
-
+onready var speech_bubble = get_node("SpeechBubble")
+onready var speech_text = get_node("SpeechBubble/SpeechText")
 
 # Objects
 var door
@@ -55,6 +56,7 @@ func debug():
 func _ready():
 	self.add_child(inv)
 	inv.set_up(inv_location, 1)
+	speech_bubble.visible = false
 	chairs = get_tree().get_nodes_in_group("Chair")
 	if not choose_chair():
 		state = "wait"
@@ -99,9 +101,8 @@ func _process(_delta):
 
 
 func talk(phrase):
-	$SpeechBubble.visible = true
-	$Speech.visible = true
-	$Speech.text = phrase
+	speech_bubble.visible = true
+	speech_text.text = phrase
 
 
 func choose_chair():
@@ -221,8 +222,7 @@ func _on_DetectorPlayer_body_entered(body):
 
 func _on_DetectorPlayer_body_exited(body):
 	if body.is_in_group("Player"):
-		$SpeechBubble.visible = false
-		$Speech.visible = false
+		speech_bubble.visible = false
 		player_in_range = false
 
 

@@ -3,6 +3,7 @@ extends ToolBase
 
 func _ready():
 	anim_player = get_node("AnimationPlayer")
+	anim_player.play("right")
 	selector = $FryingPanObject/Select
 	tool_object = $FryingPanObject
 	ui_location = $PointUI

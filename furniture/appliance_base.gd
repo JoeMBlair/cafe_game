@@ -4,6 +4,7 @@ class_name ApplianceBase
 
 var inv = preload("res://inventory.tscn").instance()
 var type = "Interactable"
+var has_ui = true
 var in_use = false
 var detect = true
 var held = false
