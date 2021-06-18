@@ -1,7 +1,9 @@
 extends KinematicBody2D
 
 # Player
+signal state_changed(customer_state)
 var state = "idle"
+var is_seated = false
 var vector2vector = Vector2.ZERO
 var direction
 var velocity = Vector2.ZERO
@@ -42,63 +44,61 @@ func valid_action(user):
 
 
 func debug():
-	if Input.is_action_just_pressed("Debug"):
-		var user = get_tree().get_nodes_in_group("Player")
-		if valid_action(user[0]):
-			if spawn_rate == spawn_rate_normal:
-				spawn_rate = spawn_rate_extreme
-				user[0].modulate = Color.red
-			else:
-				spawn_rate = spawn_rate_normal
-				user[0].modulate = Color.white
+	pass
+#	if Input.is_action_just_pressed("Debug"):
+#		var user = get_tree().get_nodes_in_group("Player")
+#		if valid_action(user[0]):
+#			if spawn_rate == spawn_rate_normal:
+#				spawn_rate = spawn_rate_extreme
+#				user[0].modulate = Color.red
+#			else:
+#				spawn_rate = spawn_rate_normal
+#				user[0].modulate = Color.white
 
 
 func _ready():
 	self.add_child(inv)
 	inv.set_up(inv_location, 1)
 	speech_bubble.visible = false
-	chairs = get_tree().get_nodes_in_group("Chair")
-	if not choose_chair():
-		state = "wait"
-	else:
-		state = "goto_chair"
+#	chairs = get_tree().get_nodes_in_group("Chair")
+#	if not choose_chair():
+#		state = "wait"
+#	else:
+	state = "goto_chair"
 
 
 func _process(_delta):
 	debug()
-	if state == "wait":
-		if choose_chair():
-			state = "goto_chair"
-	elif state == "goto_chair":
-		if goto_location(chosen_chair):
-			state = "seated"
-	elif state == "seated":
-		var areas = $DetectorPlayer.get_overlapping_areas()
-		for area in areas:
-			if area.name == "Table":
-				table = area
-				break
-		plate = table.check_item(self)
-		order()
-	elif state == "ordered":
-		if plate["Item"] and not $EatTimer.time_left:
-			check_plate(plate)
-			if plate["Item"].item_type == "food":
-				if plate["Item"].can_cook and not plate["Item"].is_cooked:
-					talk("That's not cooked!")
-				elif plate["Item"].can_cook and plate["Item"].burnt:
-					talk("It's burnt!")
-				elif plate["Item"].item_name == item_chosen:
-					plate["In Use"] = true
-					talk("Thank you!")
-					$EatTimer.start()
-				else:
-					talk("That's not what I ordered.")
-	elif state == "ate":
-			talk("Thanks for the meal! Bye.")
-			if go_home():
-				self.queue_free()
+	if chosen_chair and not is_seated:
+		if goto_location(chosen_chair.Node):
+			order()
+	elif not plate:
+		if check_order():
+			if plate["Item"]:
+				check_plate(plate)
+				var plate_food = plate.Item
+				if plate_food.item_type == "food":
+					if plate_food.can_cook and not plate_food.is_cooked:
+						talk("That's not cooked!")
+					elif plate_food.can_cook and plate_food.burnt:
+						talk("It's burnt!")
+					elif plate_food.item_name == item_chosen:
+						plate["In Use"] = true
+						talk("Thank you!")
+						$EatTimer.start()
+					else:
+						talk("That's not what I ordered.")
+	if state == "ate":
+		talk("Thanks for the meal! Bye.")
+		if go_home():
+			self.queue_free()
 
+func check_order():
+	var plate_spot = chosen_chair.Plate
+	if plate_spot.Item != null:
+		plate = plate_spot
+		return true
+	return false
 
 func talk(phrase):
 	speech_bubble.visible = true
@@ -106,7 +106,7 @@ func talk(phrase):
 
 
 func choose_chair():
-	if not chosen_chair:
+	if not chosen_chair.Node:
 		for chair in chairs:
 			if not chair.in_use:
 				closet_chair = chair
@@ -131,15 +131,16 @@ func goto_location(object):
 	if abs(vector2vector.y) > 1:
 		return false
 	else:
+		is_seated = true
 		return true
 
 
-func goto_seat():
-	if not state == "seated":
-		vector2vector = closet_chair.global_position - self.global_position
-		direction = vector2vector.normalized()
-		velocity = direction * speed
-		velocity = move_and_slide(velocity)
+#func goto_seat():
+#	if not state == "seated":
+#		vector2vector = closet_chair.global_position - self.global_position
+#		direction = vector2vector.normalized()
+#		velocity = direction * speed
+#		velocity = move_and_slide(velocity)
 
 
 func order():
@@ -216,7 +217,7 @@ func go_home():
 func _on_DetectorPlayer_body_entered(body):
 	if body.is_in_group("Player"):
 		if state == "ordered":
-			talk(String("I want %s, please!" % item_chosen))
+			talk(String("%s, please!" % item_chosen))
 		player_in_range = true
 
 
@@ -233,4 +234,4 @@ func _on_EatTimer_timeout():
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "eat":
 		state = "ate"
-		closet_chair.in_use = false
+		chosen_chair.Node.in_use = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://furniture/table/table.png" type="Texture" id=1]
 [ext_resource path="res://furniture/table/table.gd" type="Script" id=2]
@@ -11,9 +11,6 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=2]
-radius = 5.5832
-
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 30, 32.1622 )
 
@@ -22,6 +19,7 @@ extents = Vector2( 40, 40 )
 
 [node name="Table" type="Area2D" groups=[
 "Interactable",
+"Table",
 ]]
 script = ExtResource( 2 )
 
@@ -31,37 +29,25 @@ frames = SubResource( 1 )
 
 [node name="FoodSpots" type="Node2D" parent="."]
 
-[node name="FoodStopLeft" type="Area2D" parent="FoodSpots" groups=[
+[node name="FoodStopLeft" type="Node2D" parent="FoodSpots" groups=[
 "FoodSpot",
 ]]
 position = Vector2( -20, 0 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodStopLeft"]
-shape = SubResource( 2 )
-
-[node name="FoodSpotTop" type="Area2D" parent="FoodSpots" groups=[
+[node name="FoodSpotTop" type="Node2D" parent="FoodSpots" groups=[
 "FoodSpot",
 ]]
 position = Vector2( 0, -24 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodSpotTop"]
-shape = SubResource( 2 )
-
-[node name="FoodSpotBottom" type="Area2D" parent="FoodSpots" groups=[
+[node name="FoodSpotBottom" type="Node2D" parent="FoodSpots" groups=[
 "FoodSpot",
 ]]
 position = Vector2( 0, 23 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodSpotBottom"]
-shape = SubResource( 2 )
-
-[node name="FoodSpotRight" type="Area2D" parent="FoodSpots" groups=[
+[node name="FoodSpotRight" type="Node2D" parent="FoodSpots" groups=[
 "FoodSpot",
 ]]
 position = Vector2( 20, 0 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FoodSpots/FoodSpotRight"]
-shape = SubResource( 2 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 visible = false
@@ -70,6 +56,5 @@ visible = false
 position = Vector2( 0, 10 )
 shape = SubResource( 3 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
+[node name="Detector" type="CollisionShape2D" parent="."]
 shape = SubResource( 4 )

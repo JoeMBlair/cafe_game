@@ -9,7 +9,7 @@
 [ext_resource path="res://furniture/chair/chair.tscn" type="PackedScene" id=7]
 [ext_resource path="res://furniture/cooker/cooker.tscn" type="PackedScene" id=8]
 [ext_resource path="res://tools/plate/plate.tscn" type="PackedScene" id=9]
-[ext_resource path="res://customer/customer.tscn" type="PackedScene" id=10]
+[ext_resource path="res://customer/customer_manager.tscn" type="PackedScene" id=10]
 [ext_resource path="res://cafe/door/door.tscn" type="PackedScene" id=11]
 [ext_resource path="res://furniture/sink/sink.tscn" type="PackedScene" id=12]
 [ext_resource path="res://tools/recipe_book/recipe_book.tscn" type="PackedScene" id=13]
@@ -110,8 +110,7 @@ speed = 250
 [node name="Door" parent="." instance=ExtResource( 11 )]
 position = Vector2( 432, 566 )
 
-[node name="Customer" parent="." instance=ExtResource( 10 )]
-position = Vector2( 432, 560 )
-
 [node name="RecipeBook" parent="." instance=ExtResource( 13 )]
 position = Vector2( 553, 116 )
+
+[node name="CustomerManager" parent="." instance=ExtResource( 10 )]

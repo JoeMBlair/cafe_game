@@ -8,11 +8,12 @@ func _ready():
 	
 # warning-ignore:unused_argument
 func _process(delta):
-	debug()
+	pass
+#	debug()
 
 
-func debug():
-	if Input.is_action_just_pressed("spawn"):
-		var instance = scene.instance()
-		add_child(instance)
-		instance.global_position = self.global_position
+#func debug():
+#	if Input.is_action_just_pressed("spawn"):
+#		var instance = scene.instance()
+#		add_child(instance)
+#		instance.global_position = self.global_position

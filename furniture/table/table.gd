@@ -2,6 +2,8 @@ extends ApplianceBase
 
 var food_spots = []
 var chosen_plate
+var chairs : Array
+onready var detector = get_node("Detector")
 #var held = false
 
 
@@ -12,6 +14,8 @@ func _ready():
 		in_use.append(false)
 	var params = {"Spot": food_spots, "In Use": in_use}
 	set_up("Table", 4, params)
+	yield(get_tree().create_timer(0.1), "timeout")
+	chairs = get_chairs()
 
 
 func _process(_delta):
@@ -41,6 +45,16 @@ func use(player):
 
 func check_item(player):
 	return nearest_plate(player)
+
+func get_chairs():
+	chairs.clear()
+	var chair_nodes = get_overlapping_bodies()
+	var return_chairs : Array
+	for single_chair in chair_nodes:
+		if single_chair.is_in_group("Chair"):
+			var plate = nearest_plate(single_chair)
+			return_chairs +=[{"Node": single_chair, "Plate": plate}]
+	return return_chairs
 
 
 func nearest_plate(player):
