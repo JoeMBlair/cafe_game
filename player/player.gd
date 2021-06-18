@@ -169,7 +169,10 @@ func get_input():
 	if velocity == Vector2.ZERO:
 		direction = Vector2.ZERO
 		inputs_held.clear()
+	if disable_input.has("Move"):
+		direction = Vector2.ZERO
 		
+		velocity = Vector2.ZERO
 	if not disable_input.has("Move"):
 		if Input.is_action_just_pressed("move_right"):
 #			direction.x = 1
@@ -294,9 +297,7 @@ func nearest_action(actions, type = "default"):
 		var nearest_action = actions[0]
 		if nearest_action == held_item and type == "Interact":
 			actions.erase(nearest_action)
-			
 		for action in actions:
-			
 			if action < nearest_action:
 				nearest_action = action
 		return nearest_action

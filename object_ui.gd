@@ -5,6 +5,7 @@ extends CanvasLayer
 var is_open = false
 var just_opened = false
 var object_node
+var object_direction
 var ui_scale = 1
 var object_location
 var selector
@@ -92,6 +93,7 @@ func ui_interact(player, object, ui_scale, ui_offset, object_selector, anim_play
 		
 #		Set up graphics for the menu
 		if anim_player:
+			object_direction = anim_player.assigned_animation
 			anim_player.play("open")
 			anim_player.play("right")
 #			player.set_direction(player.direction)
@@ -102,8 +104,6 @@ func ui_interact(player, object, ui_scale, ui_offset, object_selector, anim_play
 		yield(get_tree().create_timer(0.05), "timeout")
 		selector.visible = true
 		move_selector()
-#		move_selector()
-		
 	else:
 		space_select = 0
 		inv_selection = 0
@@ -120,8 +120,9 @@ func ui_interact(player, object, ui_scale, ui_offset, object_selector, anim_play
 		background.visible = false
 		if anim_player:
 			anim_player.play("closed")
+			anim_player.play(object_direction)
 			player.set_direction(player.direction_name)
-			player.set_state("idle")			
+			player.set_state("idle")
 		
 #		Removes frige from UI node back to it's location in space
 		object.get_parent().remove_child(object)
