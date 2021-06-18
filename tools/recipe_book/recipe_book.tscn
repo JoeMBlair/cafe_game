@@ -1,0 +1,163 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://tools/recipe_book/recipe_book.png" type="Texture" id=1]
+[ext_resource path="res://tools/recipe_book/recipe_book.gd" type="Script" id=2]
+[ext_resource path="res://furniture/cooker/cooker.tres" type="DynamicFont" id=3]
+[ext_resource path="res://tools/recipe_book/recipe_book_ui.png" type="Texture" id=4]
+[ext_resource path="res://furniture/cooker/dogica.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 9 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=4]
+size = 8
+extra_spacing_top = 40
+font_data = ExtResource( 5 )
+
+[node name="RecipeBook" type="Area2D" groups=[
+"Interactable",
+]]
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+margin_left = -12.0
+margin_top = -15.0
+margin_right = 535.0
+margin_bottom = 343.0
+color = Color( 0, 0, 0, 0.490196 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BookUI" type="AnimatedSprite" parent="CanvasLayer"]
+position = Vector2( 256, 150 )
+scale = Vector2( 3, 3 )
+frames = SubResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Spot0" type="Node2D" parent="CanvasLayer/BookUI"]
+position = Vector2( -38, -29.3333 )
+
+[node name="Spot1" type="Node2D" parent="CanvasLayer/BookUI"]
+position = Vector2( -38, -15 )
+
+[node name="Spot2" type="Node2D" parent="CanvasLayer/BookUI"]
+position = Vector2( -38, -0.332996 )
+
+[node name="Spot3" type="Node2D" parent="CanvasLayer/BookUI"]
+position = Vector2( -38, 13.9996 )
+
+[node name="PageLeft" type="Node2D" parent="CanvasLayer/BookUI"]
+position = Vector2( -29.6667, -28.6667 )
+scale = Vector2( 0.3, 0.3 )
+
+[node name="IngredientNames" type="RichTextLabel" parent="CanvasLayer/BookUI/PageLeft"]
+margin_left = 7.77777
+margin_top = -40.0
+margin_right = 93.7778
+margin_bottom = 180.0
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "Potato
+Egg
+Egg
+Egg"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PageRight" type="Node2D" parent="CanvasLayer/BookUI"]
+position = Vector2( 21.6667, -5.00001 )
+scale = Vector2( 0.3, 0.3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="RecipeName" type="RichTextLabel" parent="CanvasLayer/BookUI/PageRight"]
+margin_left = -60.1111
+margin_top = -84.4444
+margin_right = 78.8889
+margin_bottom = -45.4444
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Cake[/center]"
+text = "Cake"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpotPrepared" type="Node2D" parent="CanvasLayer/BookUI/PageRight"]
+position = Vector2( 2.11102, -23.3332 )
+scale = Vector2( 6.66667, 6.66667 )
+
+[node name="RecipeInstructions" type="RichTextLabel" parent="CanvasLayer/BookUI/PageRight"]
+margin_left = -58.0
+margin_top = 18.0
+margin_right = 84.0
+margin_bottom = 96.0
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "Cut Celery
+Test
+asd
+asd
+asd
+asd"
+text = "Cut Celery
+Test
+asd
+asd
+asd
+asd"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PageNumber" type="RichTextLabel" parent="CanvasLayer/BookUI/PageRight"]
+margin_left = 60.2222
+margin_top = 94.5556
+margin_right = 98.2222
+margin_bottom = 112.556
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Cake[/center]"
+text = "Cake"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Node2D" type="Node2D" parent="CanvasLayer"]

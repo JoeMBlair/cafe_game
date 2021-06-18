@@ -2,8 +2,8 @@ extends ItemBase
 
 class_name FoodBase
 
-export var cooked = false
-export var cut = false
+export var is_cooked = false
+export var is_cut = false
 var cook_time = 1
 var can_cook = false
 var can_cut = false
@@ -14,16 +14,16 @@ func _ready():
 	set_item(self)
 	set_vars(self)
 	item_type = "food"
-	valid_spaces += ["Mixing Bowl", "Fridge"]
+	valid_spaces += ["Mixing Bowl", "Fridge", "Plate"]
 
 
 func cut():
 	item.get_node("AnimatedSprite").animation = "cut"
-	item.cut = true
+	item.is_cut = true
 
 
 func cook():
-	item.cooked = true
+	item.is_cooked = true
 	item.get_node("AnimatedSprite").animation = "cooked"
 	item.modulate = Color(1, 1 , 1, 1)
 
@@ -40,15 +40,16 @@ func eat():
 	self.queue_free()
 
 
-func get_stats(food):
+func get_stats():
+	var food = self
 	var food_name = food.item_name
 	if food.can_cook:
-		if food.cooked:
+		if food.is_cooked:
 			food_name = "Cooked " + food_name
 		else:
 			food_name = "Uncooked " + food_name
 	if food.can_cut:
-		if food.cut:
+		if food.is_cut:
 			food_name = "Cut " + food_name
 		else:
 			food_name = "Uncut " + food_name
@@ -56,21 +57,16 @@ func get_stats(food):
 
 
 func set_vars(item):
-	if item.cooked:
-		cook()
-	if item.cut:
-		cut()
-	if item.burnt:
-		burn()
+	if item.is_cooked: cook()
+	if item.is_cut: cut()
+	if item.burnt: burn()
 
 
-func valid_item(object, location, action):
-	if object.item_type == "food":
-		if object.valid_spaces.has(location):
-			if action == "cut" and not object.cut:
-				return true
-			elif action == "cook" and not object.cooked:
-				return true
-			elif action == "add":
-				return true
+func valid_item(location, action):
+	if item_type == "food":
+		if valid_spaces.has(location):
+			match action:
+				"cut": if not is_cut: return true
+				"cook": if not is_cooked: return true
+				"add": return true
 	return false

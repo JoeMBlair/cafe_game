@@ -2,6 +2,7 @@ extends ApplianceBase
 
 var food_spots = []
 var chosen_plate
+#var held = false
 
 
 func _ready():
@@ -16,15 +17,25 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("Debug"):
 		pass
+func ui_interact(player):
+	chosen_plate = nearest_plate(player)
+	if chosen_plate.Item:
+		if chosen_plate.Item.item_type == "tool":
+			chosen_plate.Item.ui_interact(player)
+
 
 func use(player):
 	chosen_plate = nearest_plate(player)
-	
 	if not chosen_plate["In Use"]:
-		if player.held_item and not chosen_plate.Item:
-			if player.held_item.is_in_group("Food"):
-				pick_up(player.remove_item(player.held_space), player.location_name(), null, chosen_plate["space Index"])
-		elif not player.held_item and chosen_plate.Item:
+		var player_item = player.held_item
+		if player_item:
+			if not chosen_plate.Item:
+				if player_item.valid_item("Table", "add"):
+					pick_up(player.remove_item(player.held_space), "Table", null, chosen_plate["Space Index"])
+			elif chosen_plate.Item.item_name == "Plate":
+				if chosen_plate.Item.is_space():
+					chosen_plate.Item.pick_up(player.remove_item(player.held_space))
+		elif not player_item and chosen_plate.Item:
 			player.pick_up(remove_item(chosen_plate))
 
 

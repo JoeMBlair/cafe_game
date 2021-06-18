@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tools/frying_pan/frying_pan.tscn" type="PackedScene" id=2]
@@ -8,10 +8,12 @@
 [ext_resource path="res://floors.tscn" type="PackedScene" id=6]
 [ext_resource path="res://furniture/chair/chair.tscn" type="PackedScene" id=7]
 [ext_resource path="res://furniture/cooker/cooker.tscn" type="PackedScene" id=8]
+[ext_resource path="res://tools/plate/plate.tscn" type="PackedScene" id=9]
 [ext_resource path="res://customer/customer.tscn" type="PackedScene" id=10]
 [ext_resource path="res://cafe/door/door.tscn" type="PackedScene" id=11]
 [ext_resource path="res://furniture/sink/sink.tscn" type="PackedScene" id=12]
-[ext_resource path="res://furniture/chopping_board/work_station.tscn" type="PackedScene" id=14]
+[ext_resource path="res://tools/recipe_book/recipe_book.tscn" type="PackedScene" id=13]
+[ext_resource path="res://furniture/work_station/work_station.tscn" type="PackedScene" id=14]
 [ext_resource path="res://furniture/fridge/fridge.tscn" type="PackedScene" id=21]
 
 [node name="Main" type="Node2D"]
@@ -31,7 +33,7 @@ __meta__ = {
 [node name="Floors" parent="." instance=ExtResource( 6 )]
 position = Vector2( 400, 32 )
 scale = Vector2( 2, 2 )
-tile_data = PoolIntArray( 196608, 0, 983043, 196609, 0, 983043, 196610, 0, 983043, 196611, 0, 983043, 196612, 0, 983044, 196613, 0, 983044, 196614, 0, 983043, 196615, 0, 983043, 196616, 0, 983043, 262144, 0, 983043, 262145, 0, 983043, 262146, 0, 983043, 262147, 0, 983043, 262148, 0, 983043, 262149, 0, 983043, 262150, 0, 983043, 262151, 0, 983044, 262152, 0, 983043, 327680, 0, 983043, 327681, 0, 983043, 327682, 0, 983043, 327683, 0, 983043, 327684, 0, 983043, 327685, 0, 983043, 327686, 0, 983043, 327687, 0, 983043, 327688, 0, 983043, 393216, 0, 983043, 393217, 0, 983043, 393218, 0, 983044, 393219, 0, 983043, 393220, 0, 983043, 393221, 0, 983043, 393222, 0, 983043, 393223, 0, 983043, 393224, 0, 983043, 458752, 0, 983044, 458753, 0, 983043, 458754, 0, 983043, 458755, 0, 983043, 458756, 0, 983043, 458757, 0, 983043, 458758, 0, 983043, 458759, 0, 983043, 458760, 0, 983043, 524288, 0, 65537, 524289, 0, 65537, 589824, 0, 1, 589825, 0, 1, 589826, 0, 1, 589827, 0, 1, 589828, 0, 1, 589829, 0, 1, 589830, 0, 1, 589831, 0, 1, 589832, 0, 1, 655360, 0, 1, 655361, 0, 196608, 655362, 0, 196609, 655363, 0, 196609, 655364, 0, 196609, 655365, 0, 196609, 655366, 0, 196609, 655367, 0, 196610, 655368, 0, 1, 720896, 0, 1, 720897, 0, 262144, 720898, 0, 393216, 720899, 0, 393217, 720900, 0, 393217, 720901, 0, 393217, 720902, 0, 393218, 720903, 0, 262146, 720904, 0, 1, 786432, 0, 1, 786433, 0, 262144, 786434, 0, 458752, 786435, 0, 720899, 786436, 0, 720899, 786437, 0, 720899, 786438, 0, 458754, 786439, 0, 262146, 786440, 0, 1, 851968, 0, 1, 851969, 0, 262144, 851970, 0, 524288, 851971, 0, 524289, 851972, 0, 524289, 851973, 0, 524289, 851974, 0, 524290, 851975, 0, 262146, 851976, 0, 1, 917504, 0, 1, 917505, 0, 327680, 917506, 0, 327681, 917507, 0, 327681, 917508, 0, 327681, 917509, 0, 327681, 917510, 0, 327681, 917511, 0, 327682, 917512, 0, 1, 983040, 0, 1, 983041, 0, 1, 983042, 0, 1, 983043, 0, 1, 983044, 0, 1, 983045, 0, 1, 983046, 0, 1, 983047, 0, 1, 983048, 0, 1 )
+tile_data = PoolIntArray( 65544, 0, 0, 196608, 0, 983043, 196609, 0, 983043, 196610, 0, 983043, 196611, 0, 983043, 196612, 0, 983044, 196613, 0, 983044, 196614, 0, 983044, 196615, 0, 983044, 196616, 0, 983043, 262144, 0, 983043, 262145, 0, 983043, 262146, 0, 983043, 262147, 0, 983043, 262148, 0, 983043, 262149, 0, 983043, 262150, 0, 983044, 262151, 0, 983043, 262152, 0, 983043, 327680, 0, 983043, 327681, 0, 983043, 327682, 0, 983043, 327683, 0, 983043, 327684, 0, 983043, 327685, 0, 983043, 327686, 0, 983043, 327687, 0, 983043, 327688, 0, 983043, 393216, 0, 983043, 393217, 0, 983043, 393218, 0, 983044, 393219, 0, 983043, 393220, 0, 983043, 393221, 0, 983043, 393222, 0, 983043, 393223, 0, 983043, 393224, 0, 983043, 458752, 0, 983044, 458753, 0, 983043, 458754, 0, 983043, 458755, 0, 983043, 458756, 0, 983043, 458757, 0, 983043, 458758, 0, 983043, 458759, 0, 983043, 458760, 0, 983043, 524288, 0, 65537, 524289, 0, 65537, 589824, 0, 1, 589825, 0, 1, 589826, 0, 1, 589827, 0, 1, 589828, 0, 1, 589829, 0, 1, 589830, 0, 1, 589831, 0, 1, 589832, 0, 1, 655360, 0, 1, 655361, 0, 196608, 655362, 0, 196609, 655363, 0, 196609, 655364, 0, 196609, 655365, 0, 196609, 655366, 0, 196609, 655367, 0, 196610, 655368, 0, 1, 720896, 0, 1, 720897, 0, 262144, 720898, 0, 393216, 720899, 0, 393217, 720900, 0, 393217, 720901, 0, 393217, 720902, 0, 393218, 720903, 0, 262146, 720904, 0, 1, 786432, 0, 1, 786433, 0, 262144, 786434, 0, 458752, 786435, 0, 720899, 786436, 0, 720899, 786437, 0, 720899, 786438, 0, 458754, 786439, 0, 262146, 786440, 0, 1, 851968, 0, 1, 851969, 0, 262144, 851970, 0, 524288, 851971, 0, 524289, 851972, 0, 524289, 851973, 0, 524289, 851974, 0, 524290, 851975, 0, 262146, 851976, 0, 1, 917504, 0, 1, 917505, 0, 327680, 917506, 0, 327681, 917507, 0, 327681, 917508, 0, 327681, 917509, 0, 327681, 917510, 0, 327681, 917511, 0, 327682, 917512, 0, 1, 983040, 0, 1, 983041, 0, 1, 983042, 0, 1, 983043, 0, 1, 983044, 0, 1, 983045, 0, 1, 983046, 0, 1, 983047, 0, 1, 983048, 0, 1 )
 
 [node name="Objects" type="YSort" parent="."]
 position = Vector2( 528, 384 )
@@ -49,15 +51,19 @@ position = Vector2( 535, 128 )
 position = Vector2( 618, 128 )
 
 [node name="Fridge" parent="Objects/Kitchen" instance=ExtResource( 21 )]
-position = Vector2( 416, 116 )
+position = Vector2( 418, 116 )
+state = ""
+
+[node name="Plate" parent="Objects/Kitchen" instance=ExtResource( 9 )]
+position = Vector2( 576, 176 )
+
+[node name="FryingPan" parent="Objects/Kitchen" instance=ExtResource( 2 )]
+position = Vector2( 560, 208 )
 
 [node name="SittingArea" type="YSort" parent="Objects"]
 
 [node name="TableSet1" type="YSort" parent="Objects/SittingArea"]
 position = Vector2( 80.484, 98.434 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="ChairTop" parent="Objects/SittingArea/TableSet1" instance=ExtResource( 7 )]
 position = Vector2( 0, -48 )
@@ -69,14 +75,12 @@ directions = "right"
 
 [node name="ChairRight" parent="Objects/SittingArea/TableSet1" instance=ExtResource( 7 )]
 position = Vector2( 45, -11 )
+directions = "left"
 
 [node name="Table" parent="Objects/SittingArea/TableSet1" instance=ExtResource( 4 )]
 
 [node name="TableSet2" type="YSort" parent="Objects/SittingArea"]
 position = Vector2( 80.484, -13.566 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="ChairTop" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 7 )]
 position = Vector2( 0, -48 )
@@ -88,6 +92,7 @@ directions = "right"
 
 [node name="ChairRight" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 7 )]
 position = Vector2( 45, -10 )
+directions = "left"
 
 [node name="Table" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 4 )]
 
@@ -100,6 +105,7 @@ tile_data = PoolIntArray( 0, 0, 131072, 1, 0, 131073, 2, 0, 131073, 3, 0, 131073
 
 [node name="Player" parent="Objects" instance=ExtResource( 1 )]
 position = Vector2( 0, 32 )
+speed = 250
 
 [node name="Door" parent="." instance=ExtResource( 11 )]
 position = Vector2( 432, 566 )
@@ -107,5 +113,5 @@ position = Vector2( 432, 566 )
 [node name="Customer" parent="." instance=ExtResource( 10 )]
 position = Vector2( 432, 560 )
 
-[node name="FryingPan" parent="." instance=ExtResource( 2 )]
-position = Vector2( 464, 192 )
+[node name="RecipeBook" parent="." instance=ExtResource( 13 )]
+position = Vector2( 553, 116 )

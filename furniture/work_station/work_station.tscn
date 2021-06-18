@@ -1,13 +1,14 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://furniture/chopping_board/chopping_board.png" type="Texture" id=1]
-[ext_resource path="res://furniture/chopping_board/work_station.gd" type="Script" id=2]
-[ext_resource path="res://furniture/chopping_board/bowl.png" type="Texture" id=3]
-[ext_resource path="res://furniture/chopping_board/select.png" type="Texture" id=4]
+[ext_resource path="res://furniture/work_station/select.png" type="Texture" id=1]
+[ext_resource path="res://furniture/work_station/bowl.png" type="Texture" id=2]
+[ext_resource path="res://furniture/work_station/work_station.png" type="Texture" id=3]
+[ext_resource path="res://furniture/work_station/chopping_board.tscn" type="PackedScene" id=4]
+[ext_resource path="res://furniture/work_station/mixing_bowl/mixing_bowl.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
+"frames": [ ExtResource( 3 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -16,31 +17,25 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 28, 6 )
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 8, 8 )
-
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=3]
 radius = 2.0
 
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 4 )
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 32, 32 )
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ SubResource( 5 ) ],
+"frames": [ SubResource( 4 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 28, 20 )
 
-[node name="WorkStation" type="Area2D" groups=[
-"Interactable",
-]]
-script = ExtResource( 2 )
+[node name="WorkStation" type="Area2D"]
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
@@ -50,26 +45,25 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 26 )
+visible = false
+position = Vector2( 0, 10 )
 shape = SubResource( 2 )
 
-[node name="DetectorBoard" type="Area2D" parent="."]
+[node name="DetectorBoard" type="Node2D" parent="."]
 position = Vector2( -13, -10 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorBoard"]
-shape = SubResource( 3 )
+[node name="ChoppingBoard" parent="DetectorBoard" instance=ExtResource( 4 )]
 
-[node name="DetectorBowl" type="Area2D" parent="."]
-position = Vector2( 9, -10 )
+[node name="DetectorBowl" type="Node2D" parent="."]
+position = Vector2( 9, -14 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorBowl"]
-shape = SubResource( 3 )
+[node name="MixingBowl" parent="DetectorBowl" instance=ExtResource( 5 )]
 
 [node name="CuttingBoard" type="Area2D" parent="."]
 position = Vector2( -11, -10 )
@@ -78,7 +72,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CuttingBoard"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -88,7 +82,7 @@ visible = false
 [node name="Bowl" type="Sprite" parent="CanvasLayer/Bowl"]
 position = Vector2( 520, 380 )
 scale = Vector2( 0.727631, 0.727632 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 
 [node name="FoodSpaces" type="Node2D" parent="CanvasLayer/Bowl"]
 position = Vector2( 520, 380 )
@@ -124,9 +118,10 @@ __meta__ = {
 [node name="Select" type="AnimatedSprite" parent="CanvasLayer/Bowl"]
 position = Vector2( 419, 287 )
 scale = Vector2( 2.18289, 2.1829 )
-frames = SubResource( 6 )
+frames = SubResource( 5 )
 
 [node name="Collision" type="StaticBody2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
-shape = SubResource( 7 )
+shape = SubResource( 6 )

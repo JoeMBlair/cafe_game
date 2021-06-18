@@ -31,4 +31,5 @@ frames = SubResource( 1 )
 animation = "uncut"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 2 )

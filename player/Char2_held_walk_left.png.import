@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/select.png-d7dc7fa00447a72ba71020c5d94cb8ff.stex"
+path="res://.import/Char2_held_walk_left.png-c4387d6f0a77f8f11bb489b8eee28e8a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://furniture/chopping_board/select.png"
-dest_files=[ "res://.import/select.png-d7dc7fa00447a72ba71020c5d94cb8ff.stex" ]
+source_file="res://player/Char2_held_walk_left.png"
+dest_files=[ "res://.import/Char2_held_walk_left.png-c4387d6f0a77f8f11bb489b8eee28e8a.stex" ]
 
 [params]
 

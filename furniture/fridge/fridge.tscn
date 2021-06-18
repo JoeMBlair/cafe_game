@@ -1,10 +1,9 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=29 format=2]
 
-[ext_resource path="res://furniture/fridge/fridge.png" type="Texture" id=1]
+[ext_resource path="res://furniture/fridge/fridge_color.png" type="Texture" id=1]
 [ext_resource path="res://furniture/fridge/fridge.gd" type="Script" id=2]
-[ext_resource path="res://furniture/fridge/fridge_inside.jpg" type="Texture" id=3]
+[ext_resource path="res://food/ingredients/mayo/mayo.tscn" type="PackedScene" id=3]
 [ext_resource path="res://furniture/fridge/select.png" type="Texture" id=4]
-[ext_resource path="res://furniture/fridge/fridge_inside_2.jpg" type="Texture" id=5]
 [ext_resource path="res://food/prepared_meals/cake/cake.tscn" type="PackedScene" id=6]
 [ext_resource path="res://food/ingredients/celery/celery.tscn" type="PackedScene" id=7]
 [ext_resource path="res://food/ingredients/butter/butter.tscn" type="PackedScene" id=8]
@@ -13,30 +12,177 @@
 [ext_resource path="res://food/ingredients/chocolate/chocolate.tscn" type="PackedScene" id=11]
 [ext_resource path="res://food/ingredients/potato/potato.tscn" type="PackedScene" id=12]
 [ext_resource path="res://food/ingredients/mustard/mustard.tscn" type="PackedScene" id=13]
+[ext_resource path="res://furniture/fridge/fridge_door_colour.png" type="Texture" id=14]
 [ext_resource path="res://food/ingredients/flour/flour.tscn" type="PackedScene" id=15]
 [ext_resource path="res://food/prepared_meals/cake/chocolate_cake.tscn" type="PackedScene" id=16]
 [ext_resource path="res://food/prepared_meals/potato_salad/potato_salad.tscn" type="PackedScene" id=17]
+[ext_resource path="res://furniture/fridge/fridge_door.png" type="Texture" id=18]
+[ext_resource path="res://furniture/fridge/fridge_door_shelves.png" type="Texture" id=19]
+[ext_resource path="res://furniture/fridge/fridge.png" type="Texture" id=21]
 
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ ExtResource( 1 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 21 )
+region = Rect2( 32, 0, 32, 64 )
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 16, 32 )
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 21 )
+region = Rect2( 0, 0, 32, 64 )
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ ExtResource( 3 ), ExtResource( 5 ) ],
+"frames": [ SubResource( 1 ) ],
 "loop": true,
-"name": "default",
+"name": "open",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 2 ) ],
+"loop": true,
+"name": "closed",
 "speed": 5.0
 } ]
 
-[sub_resource type="SpriteFrames" id=4]
+[sub_resource type="GDScript" id=4]
+script/source = "#tool
+extends AnimatedSprite
+
+export var fridge_colour : Color
+
+
+"
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 16, 30 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 12, 6 )
+
+[sub_resource type="Animation" id=7]
+resource_name = "closed"
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "closed" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ShelfSpaces:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Door:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Light:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Select:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ShelfSpaces:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Door:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "open" ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Light:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Select:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="SpriteFrames" id=9]
 animations = [ {
 "frames": [ ExtResource( 4 ) ],
 "loop": true,
@@ -44,150 +190,237 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 12, 6 )
-
 [node name="Fridge" type="Area2D" groups=[
 "Fridge",
 "Interactable",
 ]]
 script = ExtResource( 2 )
+state = "closed"
+
+[node name="FridgeColour" type="Sprite" parent="."]
+modulate = Color( 0.39, 0.58, 0.93, 1 )
+position = Vector2( 0, 0.5 )
+texture = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 2, 2 )
-frames = SubResource( 1 )
+frames = SubResource( 3 )
+animation = "closed"
+offset = Vector2( 0, 0.5 )
+script = SubResource( 4 )
 
-[node name="Collison" type="StaticBody2D" parent="."]
-position = Vector2( 0, 38 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Collison"]
-position = Vector2( 0, -38 )
-shape = SubResource( 2 )
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Shelf" type="Node2D" parent="CanvasLayer"]
+[node name="ShelfSpaces" type="Node2D" parent="."]
 visible = false
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="CanvasLayer/Shelf"]
-position = Vector2( 522, 356.651 )
-scale = Vector2( 2, 2 )
-frames = SubResource( 3 )
-frame = 1
+[node name="ShelfSpot_R1C1" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( -11, -10 )
+scale = Vector2( 0.4, 0.4 )
 
-[node name="ShelfSpaces" type="Node2D" parent="CanvasLayer/Shelf"]
+[node name="Flour" parent="ShelfSpaces/ShelfSpot_R1C1" instance=ExtResource( 15 )]
 
-[node name="ShelfSpot_R1C1" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 398, 166 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R1C2" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( -4, -10 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Flour" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C1" instance=ExtResource( 15 )]
+[node name="Egg" parent="ShelfSpaces/ShelfSpot_R1C2" instance=ExtResource( 9 )]
 
-[node name="ShelfSpot_R1C2" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 478, 166 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R1C3" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( 3, -10 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Egg" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C2" instance=ExtResource( 9 )]
+[node name="Butter" parent="ShelfSpaces/ShelfSpot_R1C3" instance=ExtResource( 8 )]
 
-[node name="ShelfSpot_R1C3" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 562, 166 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R1C4" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( 10, -10 )
+scale = Vector2( 0.4, 0.4 )
+__meta__ = {
+"_edit_group_": true,
+"_editor_description_": ""
+}
+
+[node name="Sugar" parent="ShelfSpaces/ShelfSpot_R1C4" instance=ExtResource( 10 )]
+
+[node name="ShelfSpot_R2C1" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( -11, 0 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Butter" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C3" instance=ExtResource( 8 )]
+[node name="Chocolate" parent="ShelfSpaces/ShelfSpot_R2C1" instance=ExtResource( 11 )]
 
-[node name="ShelfSpot_R1C4" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 642, 166 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R2C2" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( -4, 0 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sugar" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R1C4" instance=ExtResource( 10 )]
+[node name="Cake" parent="ShelfSpaces/ShelfSpot_R2C2" instance=ExtResource( 6 )]
 
-[node name="ShelfSpot_R2C1" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 398, 282 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R2C3" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( 3, 0 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Chocolate" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C1" instance=ExtResource( 11 )]
+[node name="ChocolateCake" parent="ShelfSpaces/ShelfSpot_R2C3" instance=ExtResource( 16 )]
 
-[node name="ShelfSpot_R2C2" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 478, 282 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R2C4" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( 10, 0 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Cake" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C2" instance=ExtResource( 6 )]
+[node name="PotatoSalad" parent="ShelfSpaces/ShelfSpot_R2C4" instance=ExtResource( 17 )]
 
-[node name="ShelfSpot_R2C3" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 562, 282 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R3C1" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( -11, 10 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Celery" parent="ShelfSpaces/ShelfSpot_R3C1" instance=ExtResource( 7 )]
+
+[node name="ShelfSpot_R3C2" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( -4, 10 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="ChocolateCake" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C3" instance=ExtResource( 16 )]
+[node name="Potato" parent="ShelfSpaces/ShelfSpot_R3C2" instance=ExtResource( 12 )]
 
-[node name="ShelfSpot_R2C4" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 642, 282 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R3C3" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( 3, 10 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="PotatoSalad" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R2C4" instance=ExtResource( 17 )]
+[node name="Mustard" parent="ShelfSpaces/ShelfSpot_R3C3" instance=ExtResource( 13 )]
 
-[node name="ShelfSpot_R3C1" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 398, 414 )
-scale = Vector2( 3, 3 )
+[node name="ShelfSpot_R3C4" type="Node2D" parent="ShelfSpaces"]
+position = Vector2( 10, 10 )
+scale = Vector2( 0.4, 0.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Celery" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C1" instance=ExtResource( 7 )]
-
-[node name="ShelfSpot_R3C2" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 478, 414 )
-scale = Vector2( 3, 3 )
+[node name="Light" type="ColorRect" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0.172549 )
+margin_left = -14.0
+margin_top = -15.0
+margin_right = 14.0
+margin_bottom = 22.0
+color = Color( 0.956863, 0.843137, 0.541176, 1 )
 __meta__ = {
-"_edit_group_": true
+"_edit_use_anchors_": false
 }
 
-[node name="Potato" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C2" instance=ExtResource( 12 )]
+[node name="Collison" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2( 0, 2 )
 
-[node name="ShelfSpot_R3C3" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 562, 414 )
-scale = Vector2( 3, 3 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Mustard" parent="CanvasLayer/Shelf/ShelfSpaces/ShelfSpot_R3C3" instance=ExtResource( 13 )]
-
-[node name="ShelfSpot_R3C4" type="Node2D" parent="CanvasLayer/Shelf/ShelfSpaces"]
-position = Vector2( 642, 414 )
-scale = Vector2( 3, 3 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Select" type="AnimatedSprite" parent="CanvasLayer/Shelf"]
-position = Vector2( 398, 167 )
-scale = Vector2( 2.75, 2.75 )
-frames = SubResource( 4 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collison"]
+shape = SubResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 38 )
-shape = SubResource( 5 )
+visible = false
+position = Vector2( 0, 23 )
+shape = SubResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/closed = SubResource( 7 )
+anims/open = SubResource( 8 )
+
+[node name="Door" type="Node2D" parent="."]
+visible = false
+position = Vector2( 32, 0.5 )
+
+[node name="DoorColour" type="Sprite" parent="Door"]
+modulate = Color( 0.39, 0.58, 0.93, 1 )
+texture = ExtResource( 14 )
+
+[node name="DoorSprite" type="Sprite" parent="Door"]
+texture = ExtResource( 18 )
+
+[node name="DoorShelfSpaces" type="Node2D" parent="Door"]
+
+[node name="DoorSpotR1C1" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( -10, -7 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="DoorSpotR1C2" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( -4, -7 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Mustard" parent="Door/DoorShelfSpaces/DoorSpotR1C2" instance=ExtResource( 13 )]
+
+[node name="DoorSpotR1C3" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( 3, -7 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Butter" parent="Door/DoorShelfSpaces/DoorSpotR1C3" instance=ExtResource( 8 )]
+
+[node name="DoorSpotR1C4" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( 10, -7 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="DoorSpotR2C1" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( -10, 3 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Egg" parent="Door/DoorShelfSpaces/DoorSpotR2C1" instance=ExtResource( 9 )]
+
+[node name="DoorSpotR2C2" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( -4, 3 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Egg2" parent="Door/DoorShelfSpaces/DoorSpotR2C2" instance=ExtResource( 9 )]
+
+[node name="DoorSpotR2C3" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( 3, 3 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Egg3" parent="Door/DoorShelfSpaces/DoorSpotR2C3" instance=ExtResource( 9 )]
+
+[node name="DoorSpotR2C4" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( 10, 3 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Egg4" parent="Door/DoorShelfSpaces/DoorSpotR2C4" instance=ExtResource( 9 )]
+
+[node name="DoorSpotR3C1" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( -10, 13 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="DoorSpotR3C2" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( -4, 13 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="DoorSpotR3C3" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( 3, 13 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Mayo" parent="Door/DoorShelfSpaces/DoorSpotR3C3" instance=ExtResource( 3 )]
+scale = Vector2( 1, 1 )
+
+[node name="DoorSpotR3C4" type="Node2D" parent="Door/DoorShelfSpaces"]
+position = Vector2( 10, 13 )
+scale = Vector2( 0.4, 0.4 )
+
+[node name="Shelves" type="Sprite" parent="Door"]
+texture = ExtResource( 19 )
+
+[node name="Select" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( -10, -10 )
+scale = Vector2( 0.2, 0.2 )
+frames = SubResource( 9 )

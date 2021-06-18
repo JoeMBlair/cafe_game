@@ -17,14 +17,14 @@ animations = [ {
 "name": "cooked",
 "speed": 5.0
 }, {
-"frames": [  ],
-"loop": true,
-"name": "uncut",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
 "name": "uncooked",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "uncut",
 "speed": 5.0
 } ]
 
@@ -41,4 +41,5 @@ frames = SubResource( 1 )
 animation = "uncooked"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 2 )

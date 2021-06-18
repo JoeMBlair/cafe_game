@@ -7,8 +7,8 @@ var ui_controls = [oven_temp, hob_temp]
 var temp = ["Off", "Low", "Med", "High"]
 var ui_open = false
 var held_item = {"Oven": null, "Hob": null}
-onready var oven_ui = get_node("CanvasLayer/CookerUI/OvenTemp")
-onready var hob_ui = get_node("CanvasLayer/CookerUI/HobTemp")
+onready var oven_ui = get_node("CanvasLayer/CookerUI/Node2D/OvenTemp")
+onready var hob_ui = get_node("CanvasLayer/CookerUI/Node2D/HobTemp")
 
 
 func _ready():
@@ -19,7 +19,7 @@ func _ready():
 func _process(_delta):
 	if ui_open:
 		if ui_selected == 0:
-			$CanvasLayer/CookerUI/Selector.position.x = -40
+			$CanvasLayer/CookerUI/Selector.position.x = 148
 			if oven_temp == 3:
 				$CanvasLayer/CookerUI/Selector/Indicator.text = "  >"
 			elif oven_temp == 0:
@@ -27,7 +27,7 @@ func _process(_delta):
 			else:
 				$CanvasLayer/CookerUI/Selector/Indicator.text = "< >"
 		else:
-			$CanvasLayer/CookerUI/Selector.position.x = 350
+			$CanvasLayer/CookerUI/Selector.position.x = 10
 			if hob_temp == 3:
 				$CanvasLayer/CookerUI/Selector/Indicator.text = "  >"
 			elif hob_temp == 0:
@@ -81,12 +81,13 @@ func use(player):
 		elif add(player, "Hob", "add", $Hob):
 			var items = get_spaces("Hob")
 			held_item.Hob = items[0]["Item"]
+			player_item.anim_player.play("right")			
 			ui_selected = 1
 			return
 	elif not player_item and get_spaces("Oven") and not in_use:
 		var oven_item = get_spaces("Oven")		
 		player.pick_up(remove_item(oven_item[0], "Oven"))
-		held_item.Oven.visible = true
+		$OvenDoor.animation = "closed"
 		return
 	elif not player_item and held_item.Hob:
 		var hob_item = get_spaces("Hob")
@@ -98,7 +99,7 @@ func ui_interact(player):
 	if not ui_open:
 		yield(.get_tree().create_timer(0.1), "timeout")
 		$CanvasLayer/CookerUI.visible = true
-		$CanvasLayer/CookerUI.position.x = 520
+		$CanvasLayer/CookerUI.position.x = 260
 		player.disable_input += ["Move", "Pick Up"]
 		ui_open = true
 		
@@ -119,21 +120,25 @@ func ui_interact(player):
 		player.disable_input.erase("Pick Up")
 		ui_open = false
 		if ui_selected == 0 and held_item.Oven and not oven_temp == 0:
-			if not oven_temp == 0 and not held_item.Oven.cooked:
+			if not oven_temp == 0 and not held_item.Oven.is_cooked:
 				cook(held_item.Oven, oven_temp)
-				$AnimatedSprite.modulate = Color.red
+				$OvenLight.visible = true
+				yield($Timer, "timeout")
+				$OvenLight.visible = false				
+#				$AnimatedSprite.modulate = Color.white
+				$OvenDoor.animation = "open"
 		elif ui_selected == 1 and held_item.Hob and not hob_temp == 0:
 			var spaces = held_item.Hob.get_spaces()
 			if spaces.size() == 4:
-				mix(held_item.Hob, held_item.Hob.location_name())
+				mix(held_item.Hob, true, held_item.Hob.location_name())
 				spaces = held_item.Hob.get_spaces()
 				var food = spaces[0]["Item"]
-				if not hob_temp == 0 and food and not food.cooked:
-					held_item.Hob.get_node("Cooking").visible = true
+				if not hob_temp == 0 and food and not food.is_cooked:
+					held_item.Hob.get_node("FryingPanObject/Cooking").visible = true
 					held_item.Hob.modulate = Color.red
 					cook(food, hob_temp)
 					yield($Timer, "timeout")
-					held_item.Hob.get_node("Cooking").visible = false
+					held_item.Hob.get_node("FryingPanObject/Cooking").visible = false
 					held_item.Hob.modulate = Color.white
 		oven_temp = 0
 		hob_temp = 0
@@ -143,9 +148,7 @@ func cook(food, appliance_temp):
 	in_use = true
 	$Timer.wait_time = food.cook_time
 	$Timer.start()
-	$AnimatedSprite.modulate = Color.red
 	yield($Timer, "timeout")
-	$AnimatedSprite.modulate = Color.white	
 	food.cook()
 	if food.cook_temp < appliance_temp:
 		food.burn()

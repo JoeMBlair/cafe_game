@@ -1,29 +1,491 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://tools/frying_pan/frying_pan.gd" type="Script" id=1]
 [ext_resource path="res://tools/frying_pan/frying_pan.png" type="Texture" id=2]
-[ext_resource path="res://furniture/chopping_board/select.png" type="Texture" id=3]
-[ext_resource path="res://tools/frying_pan/frying_pan_overlay.png" type="Texture" id=4]
+[ext_resource path="res://furniture/work_station/select.png" type="Texture" id=3]
 [ext_resource path="res://tools/frying_pan/food_cooking.png" type="Texture" id=5]
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=1]
 radius = 13.4781
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 48, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ ExtResource( 2 ) ],
+"frames": [ SubResource( 2 ) ],
 "loop": true,
-"name": "default",
+"name": "left",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "right",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "up",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ) ],
+"loop": true,
+"name": "down",
 "speed": 5.0
 } ]
 
-[sub_resource type="SpriteFrames" id=3]
-animations = [ {
-"frames": [ ExtResource( 4 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
+[sub_resource type="Animation" id=7]
+tracks/0/type = "value"
+tracks/0/path = NodePath("FryingPanObject/AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "down" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 10 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FryingPanObject/FoodSpots:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -3, 10 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("FryingPanObject/FoodSpots/Spot0:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 6, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("FryingPanObject/FoodSpots/Spot1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 6, 7 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("FryingPanObject/FoodSpots/Spot2:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("FryingPanObject/FoodSpots/Spot3:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 6 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("FryingPanObject/AnimatedSprite:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1, 10 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+tracks/0/type = "value"
+tracks/0/path = NodePath("FryingPanObject/AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "left" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -10, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FryingPanObject/FoodSpots:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -16, -5 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("FryingPanObject/FoodSpots/Spot0:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 6, 5 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("FryingPanObject/FoodSpots/Spot1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 6 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("FryingPanObject/FoodSpots/Spot2:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 6, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("FryingPanObject/FoodSpots/Spot3:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("FryingPanObject/AnimatedSprite:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -9, 7.15256e-07 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("FryingPanObject/Cooking:flip_h")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("FryingPanObject/Cooking:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -9, 0 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+tracks/0/type = "value"
+tracks/0/path = NodePath("FryingPanObject/AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FryingPanObject/FoodSpots/Spot0:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("FryingPanObject/FoodSpots/Spot1:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 6, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("FryingPanObject/FoodSpots/Spot2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 5 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("FryingPanObject/FoodSpots/Spot3:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 7, 5 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("FryingPanObject/FoodSpots:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, -3 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("FryingPanObject/AnimatedSprite:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("FryingPanObject/Cooking:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 1 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("FryingPanObject/Cooking:flip_h")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=10]
+tracks/0/type = "value"
+tracks/0/path = NodePath("FryingPanObject/AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "up" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, -9 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("FryingPanObject/FoodSpots:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -3, -17 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("FryingPanObject/FoodSpots/Spot0:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 7 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("FryingPanObject/FoodSpots/Spot1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 2 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("FryingPanObject/FoodSpots/Spot2:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 6, 7 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("FryingPanObject/FoodSpots/Spot3:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 5, 2 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("FryingPanObject/AnimatedSprite:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1, -8 ) ]
+}
 
 [node name="FryingPan" type="Area2D" groups=[
 "Interactable",
@@ -32,52 +494,53 @@ animations = [ {
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( -3, 1 )
-shape = SubResource( 2 )
+position = Vector2( 0, 10 )
+shape = SubResource( 1 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( -4, 1 )
+[node name="FryingPanObject" type="Node2D" parent="."]
+position = Vector2( 0, -3.05176e-05 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="FryingPanObject"]
+position = Vector2( -1, 10 )
 scale = Vector2( 1.5, 1.5 )
-frames = SubResource( 1 )
+frames = SubResource( 6 )
+animation = "down"
 
-[node name="HobUI" type="Sprite" parent="."]
+[node name="FoodSpots" type="Node2D" parent="FryingPanObject"]
+position = Vector2( -3, 10 )
+
+[node name="Spot0" type="Node2D" parent="FryingPanObject/FoodSpots"]
+position = Vector2( 6, 0 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Spot1" type="Node2D" parent="FryingPanObject/FoodSpots"]
+position = Vector2( 6, 7 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Spot2" type="Node2D" parent="FryingPanObject/FoodSpots"]
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Spot3" type="Node2D" parent="FryingPanObject/FoodSpots"]
+position = Vector2( 0, 6 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Select" type="Sprite" parent="FryingPanObject"]
 visible = false
-scale = Vector2( 8, 8 )
-texture = ExtResource( 2 )
-
-[node name="FoodSpots" type="Node2D" parent="."]
-
-[node name="Spot0" type="Node2D" parent="FoodSpots"]
-position = Vector2( 0, -3 )
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Spot1" type="Node2D" parent="FoodSpots"]
-position = Vector2( 3, 2 )
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Spot2" type="Node2D" parent="FoodSpots"]
-position = Vector2( -4, 0 )
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Spot3" type="Node2D" parent="FoodSpots"]
-position = Vector2( -2, 4 )
-scale = Vector2( 0.5, 0.5 )
-
-[node name="FryingPanBottom" type="AnimatedSprite" parent="."]
-visible = false
-position = Vector2( -3.72039, 1.27961 )
-scale = Vector2( 1.5, 1.5 )
-frames = SubResource( 3 )
-
-[node name="Select" type="Sprite" parent="."]
-visible = false
-position = Vector2( -4.15043, -4.27755 )
+position = Vector2( 2.84957, -4.27755 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 3 )
 
-[node name="Cooking" type="Sprite" parent="."]
+[node name="Cooking" type="Sprite" parent="FryingPanObject"]
 visible = false
-position = Vector2( -4, 1 )
+position = Vector2( 10, 1 )
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/down = SubResource( 7 )
+anims/left = SubResource( 8 )
+anims/right = SubResource( 9 )
+anims/up = SubResource( 10 )
+
+[node name="PointUI" type="Node2D" parent="."]
+position = Vector2( 6, 0 )

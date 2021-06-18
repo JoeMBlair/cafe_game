@@ -8,6 +8,7 @@ var item_type
 var held = false
 var type = "PickUp"
 var valid_spaces = []
+var detect = true
 
 
 func _process(_delta):
@@ -17,11 +18,11 @@ func _process(_delta):
 func set_item(new_item):
 	item = new_item
 
-func use(player):
+func use(_player):
 	pass
 
-func valid_item(object, location, action):
-	if object.valid_spaces.has(location):
+func valid_item(location, action):
+	if valid_spaces.has(location):
 		if action == "add":
 			return true
 		else:

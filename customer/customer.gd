@@ -11,6 +11,7 @@ var player_in_range = false
 var held_item
 onready var scene = load("res://customer/customer.tscn")
 var inv = preload("res://inventory.tscn").instance()
+var inv_location = "Customer"
 var spawn_rate_normal = [1, 1, 1, 1, 1, 1, 1, 2, 2, 3]
 var spawn_rate_extreme = [1, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6]
 var spawn_rate = spawn_rate_normal
@@ -29,7 +30,7 @@ func valid_action(user):
 	var user_item = user.held_item
 	if user_item:
 		if user_item.can_cook:
-			if user_item.cooked:
+			if user_item.is_cooked:
 				return true
 			else:
 				return false
@@ -53,7 +54,7 @@ func debug():
 
 func _ready():
 	self.add_child(inv)
-	inv.set_up("Customer", 1)
+	inv.set_up(inv_location, 1)
 	chairs = get_tree().get_nodes_in_group("Chair")
 	if not choose_chair():
 		state = "wait"
@@ -79,8 +80,9 @@ func _process(_delta):
 		order()
 	elif state == "ordered":
 		if plate["Item"] and not $EatTimer.time_left:
+			check_plate(plate)
 			if plate["Item"].item_type == "food":
-				if plate["Item"].can_cook and not plate["Item"].cooked:
+				if plate["Item"].can_cook and not plate["Item"].is_cooked:
 					talk("That's not cooked!")
 				elif plate["Item"].can_cook and plate["Item"].burnt:
 					talk("It's burnt!")
@@ -141,16 +143,35 @@ func goto_seat():
 
 func order():
 	randomize()
-	item_chosen = ItemFood.food_recipes[rand_range(0, ItemFood.food_recipes.size())]["Name"]
+	item_chosen = ItemFood.random_food()
 	print(item_chosen)
 	state = "ordered"
 
 
+func check_plate(chosen_plate):
+	if chosen_plate.Item.item_type == "tool":
+		var plate_food = chosen_plate.Item.item_space(0)
+		if plate_food.Item and plate_food.Item.item_type == "food":
+				if plate_food.Item.can_cook and not plate_food.Item.is_cooked:
+					talk("That's not cooked!")
+					return false
+				elif plate_food.Item.can_cook and plate_food.Item.burnt:
+					talk("It's burnt!")
+					return false
+				elif plate_food.Item.item_name == item_chosen:
+					chosen_plate["In Use"] = true
+					talk("Thank you!")
+					$EatTimer.start()
+				else:
+					talk("That's not what I ordered.")
+
+
 func eat():
+	var chosen_food = plate.Item.item_space(0)
 	plate["In Use"] = false
-	inv.pick_up(table.remove_item(plate), table.location_name(), $DetectorChair)
+	inv.pick_up(plate.Item.remove_item(chosen_food), inv_location, $DetectorChair)
 	$AnimationPlayer.play("eat")
-	var food = inv.get_item_slot(0)
+	var food = inv.item_space(0)
 	food.Item.eat()
 	state = "eaten"
 

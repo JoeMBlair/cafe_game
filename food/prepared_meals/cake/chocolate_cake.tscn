@@ -62,6 +62,7 @@ frames = SubResource( 1 )
 animation = "uncooked"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

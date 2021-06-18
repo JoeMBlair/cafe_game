@@ -5,6 +5,13 @@ class_name ApplianceBase
 var inv = preload("res://inventory.tscn").instance()
 var type = "Interactable"
 var in_use = false
+var detect = true
+var held = false
+var ui_scale = Vector2(30, 30)
+var ui_offset = Vector2.ZERO
+var selector
+var anim_player
+var collision
 
 func _ready():
 	self.add_child(inv)
@@ -14,8 +21,8 @@ func set_up(location, size = -1, params = []):
 	return inv.set_up(location, size, params)
 
 
-func pick_up(item = null, location = inv.default_location, hand = null, space = -1):
-	return inv.pick_up(item, location, hand, space)
+func pick_up(item = null, location = inv.default_location, hand = null, space_index = -1):
+	return inv.pick_up(item, location, hand, space_index)
 
 
 func add(player, location, action, hand = null):
@@ -23,7 +30,7 @@ func add(player, location, action, hand = null):
 
 
 func remove_item(space, location = inv.default_location, hand = null):
-	return inv.remove_item(space, location)
+	return inv.remove_item(space, location, hand)
 
 
 func delete(space, location):
@@ -37,10 +44,14 @@ func get_spaces(location, extra = null, extra2 = null, get_type = "used"):
 func item_space(space_index, location = inv.default_location):
 	return inv.item_space(space_index, location)
 
+func get_location_names():
+	return inv.get_location_names()
 
 func location_name():
 	return inv.location_name()
 
+func ui_interact(player):
+	ObjectUI.ui_interact(player, self, ui_scale, ui_offset, selector, anim_player, collision)
 
 func copy(space_item):
 	return inv.copy(space_item)
@@ -50,16 +61,21 @@ func is_space(location = inv.default_location):
 	return inv.is_space(location)
 
 
-func mix(item_tool = null, location = inv.default_location):
+func inv_size(location = inv.default_location):
+	return inv.inv_size(location)
+
+
+func mix(item_tool = null, can_cook = false, location = inv.default_location):
 	var object
 	if item_tool:
 		object = item_tool
 	else:
 		object = self
-
-	var foods = valid_recipe(location, object)
+	
+	var object_foods = object.get_spaces(location, "Item")
+	var foods = ItemFood.check_recipe(object_foods, can_cook)
 	if foods:
-		var food_path = foods[0]["Path"]
+		var food_path = foods["Path"]
 		var food_node = load(food_path).instance()
 		var object_spaces = object.get_spaces(location)
 		for space in object_spaces:
@@ -69,7 +85,8 @@ func mix(item_tool = null, location = inv.default_location):
 		object.pick_up(food_node, location)
 	
 		return food_node
-
+	else:
+		return false
 
 func valid_recipe(location, item_tool = null):
 	var ingredients = []
@@ -84,7 +101,7 @@ func valid_recipe(location, item_tool = null):
 	object_foods = object.get_spaces(location, "Item")
 	
 	for food in object_foods.size():
-		var food_state = object_foods[food].get_stats(object_foods[food])
+		var food_state = object_foods[food].get_stats()
 		ingredients.append(food_state)
 	ingredients.sort()
 
