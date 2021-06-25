@@ -22,6 +22,7 @@ resource_name = "cooked"
 "PickUp",
 ]]
 script = ExtResource( 2 )
+is_cooked = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
