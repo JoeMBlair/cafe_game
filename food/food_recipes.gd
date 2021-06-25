@@ -66,6 +66,8 @@ var food_recipes = {
 	}
 var ingredients : Dictionary
 var attributes = ["Cut", "Uncut", "Cooked", "Uncooked"]
+
+
 func _ready():
 	var dir = Directory.new()
 	if dir.open("res://food/ingredients") == OK:
@@ -86,8 +88,7 @@ func _ready():
 		ingredients.erase("..")
 		
 		get_ingredients("Potato Salad")
-				
-				
+
 
 func random_food():
 	randomize()
@@ -97,7 +98,7 @@ func random_food():
 
 
 func check_recipe(items, can_cook):
-	var object_ingredients : Array
+	var object_ingredients = []
 	for item in items:
 		object_ingredients += [item.get_stats()]
 			
@@ -111,7 +112,7 @@ func check_recipe(items, can_cook):
 
 func get_ingredients(recipe):
 	var recipe_ingredients = food_recipes[recipe]
-	var ingredient_objects : Array
+	var ingredient_objects = []
 	for food_ingredient in recipe_ingredients.Recipe:
 		var food_attributes = get_attributes(food_ingredient)
 		food_ingredient = remove_attributes(food_ingredient)
@@ -121,11 +122,12 @@ func get_ingredients(recipe):
 
 func get_attributes(ingredient_object):
 	pass
-	var export_attributes : Array
+	var export_attributes = []
 	for attribute in attributes:
 		if attribute in ingredient_object:
 			export_attributes += [attribute]
 	return export_attributes
+
 
 func remove_attributes(ingredient_object):
 	for attribute in attributes:

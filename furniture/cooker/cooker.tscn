@@ -41,6 +41,7 @@ animations = [ {
 } ]
 
 [node name="Cooker" type="Area2D" groups=[
+"Cooker",
 "Interactable",
 ]]
 script = ExtResource( 2 )
@@ -77,6 +78,7 @@ position = Vector2( -16, -12 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="CookerUI" type="Node2D" parent="CanvasLayer"]
+visible = false
 position = Vector2( -401, 136 )
 
 [node name="Sprite" type="Sprite" parent="CanvasLayer/CookerUI"]

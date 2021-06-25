@@ -76,7 +76,8 @@ func use(player):
 			var items = get_spaces("Oven")
 			held_item.Oven = items[0]["Item"]
 #			held_item.Oven.visible = false
-			ui_interact(player)
+			if player.is_in_group("Player"):
+				ui_interact(player)
 			ui_selected = 0
 		elif add(player, "Hob", "add", $Hob):
 			var items = get_spaces("Hob")
@@ -122,11 +123,6 @@ func ui_interact(player):
 		if ui_selected == 0 and held_item.Oven and not oven_temp == 0:
 			if not oven_temp == 0 and not held_item.Oven.is_cooked:
 				cook(held_item.Oven, oven_temp)
-				$OvenLight.visible = true
-				yield($Timer, "timeout")
-				$OvenLight.visible = false				
-#				$AnimatedSprite.modulate = Color.white
-				$OvenDoor.animation = "open"
 		elif ui_selected == 1 and held_item.Hob and not hob_temp == 0:
 			var spaces = held_item.Hob.get_spaces()
 			if spaces.size() == 4:
@@ -148,13 +144,16 @@ func cook(food, appliance_temp):
 	in_use = true
 	$Timer.wait_time = food.cook_time
 	$Timer.start()
+	$OvenLight.visible = true	
 	yield($Timer, "timeout")
 	food.cook()
 	if food.cook_temp < appliance_temp:
 		food.burn()
 	in_use = false
-	food.visible = true
+	$OvenLight.visible = false
+	$OvenDoor.animation = "open"
 	return food
+	
 
 
 func _on_Timer_timeout():

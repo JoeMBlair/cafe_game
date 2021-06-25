@@ -1,7 +1,8 @@
 extends Node2D
 
 func _ready():
-	OS.set_window_position(Vector2())
+	pass
+#	OS.set_window_position(Vector2())
 	
 func _process(_delta):
 	debug()

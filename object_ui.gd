@@ -25,52 +25,11 @@ func _ready():
 	player = get_tree().get_nodes_in_group("Player")
 	player = player[0]
 
-func _process(delta):
+
+func _process(_delta):
 	if is_open:
 		get_input()
 
-
-func get_input():
-	if Input.is_action_just_pressed("move_right"):
-		if space_select < object_node.inv_size() - 1:
-			space_select += 1
-		elif space_select == object_node.inv_size() - 1:
-			space_select = 0
-		move_selector()
-	if Input.is_action_just_pressed("move_left"):
-		if space_select > 0:
-			space_select -= 1
-		elif space_select == 0:
-			space_select = object_node.inv_size() - 1
-		move_selector()
-	if Input.is_action_just_pressed("move_down"):
-		if space_select + 4 < 12:
-			space_select += 4
-		move_selector()
-	if Input.is_action_just_pressed("move_up"):
-		if space_select - 4 >= 0:
-			space_select -= 4
-		move_selector()
-		
-	if not just_opened:
-		pass
-		if Input.is_action_just_pressed("pick_up"):
-			object_node.use(player)
-		if Input.is_action_just_pressed("use"):
-			object_node.ui_interact(player)
-		if location_names.size() > 1:
-			if Input.is_action_just_pressed("switch"):
-				match inv_selection:
-					0: inv_selection = 1
-					1: inv_selection = 0
-				space_select = 0
-				move_selector()
-	just_opened = false
-
-func move_selector():
-	var object_space = object_node.item_space(space_select, location_names[inv_selection])
-	selector.global_position = object_space.Spot.global_position
-	pass
 
 func ui_interact(player, object, ui_scale, ui_offset, object_selector, anim_player, collision):
 	if not is_open:
@@ -130,36 +89,48 @@ func ui_interact(player, object, ui_scale, ui_offset, object_selector, anim_play
 		if collision:
 			collision.disabled = false
 		object.global_position = object_location
+
+
+func move_selector():
+	var object_space = object_node.item_space(space_select, location_names[inv_selection])
+	selector.global_position = object_space.Spot.global_position
+	pass
+
+
+func get_input():
+	if Input.is_action_just_pressed("move_right"):
+		if space_select < object_node.inv_size() - 1:
+			space_select += 1
+		elif space_select == object_node.inv_size() - 1:
+			space_select = 0
+		move_selector()
+	if Input.is_action_just_pressed("move_left"):
+		if space_select > 0:
+			space_select -= 1
+		elif space_select == 0:
+			space_select = object_node.inv_size() - 1
+		move_selector()
+	if Input.is_action_just_pressed("move_down"):
+		if space_select + 4 < 12:
+			space_select += 4
+		move_selector()
+	if Input.is_action_just_pressed("move_up"):
+		if space_select - 4 >= 0:
+			space_select -= 4
+		move_selector()
 		
-		
-#	if not is_open:
-#		is_open = true
-#		background.visible = true
-#		player.get_node("UI/LocationUI").scale = ui_scale
-#		object_location = global_position
-#		get_parent().remove_child(self)
-#		player.get_node("UI/LocationUI").add_child(self)
-#		position = Vector2.ZERO
-#		selector.visible = true
-#		player.disable_input += ["Move", "Pick Up", "Drop"]
-#		if anim_player:
-#			anim_player.play("right")
-#		modulate = Color(1, 1, 1, 1)
-#		position -= Vector2(ui_offset)
-#	elif is_open:
-#		is_open = false
-#		player.get_node("UI/Background").visible = false
-#		var base_node = get_node("/root/Main")
-#		get_parent().remove_child(self)
-#		if player.held_item:
-#			player.hand.add_child(self)
-#			position = Vector2.ZERO
-#		else:
-#			base_node.add_child(self)
-#			global_position = object_location
-#		selector.visible = false
-#		player.disable_input.erase("Move")
-#		player.disable_input.erase("Pick Up")
-#		player.disable_input.erase("Drop")
-#		player.set_direction(player.direction)
-#		player.set_state("idle")
+	if not just_opened:
+		pass
+		if Input.is_action_just_pressed("pick_up"):
+			object_node.use(player)
+		if Input.is_action_just_pressed("use"):
+			object_node.ui_interact(player)
+		if location_names.size() > 1:
+			if Input.is_action_just_pressed("switch"):
+				match inv_selection:
+					0: inv_selection = 1
+					1: inv_selection = 0
+				space_select = 0
+				move_selector()
+	just_opened = false
+

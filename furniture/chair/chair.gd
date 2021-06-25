@@ -6,10 +6,10 @@ onready var anim_player = get_node("AnimationPlayer")
 export(NodePath) var in_use
 
 
-# warning-ignore:unused_argument
-func _process(delta):
+func _process(_delta):
 	pass
 
 func set_rotation(direction):
 	$AnimationPlayer.play(direction)
 	directions = direction
+

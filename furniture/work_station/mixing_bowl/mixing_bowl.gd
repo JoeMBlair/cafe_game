@@ -3,21 +3,18 @@ extends ApplianceBase
 var bowl_inventory 
 var is_open = false
 var space_select = 0
+
+
 func _ready():
 	var bowl_spaces = $BowlSpaces.get_children()
 	selector = $Selector
 	ui_scale = Vector2(10, 10)
 	ui_offset = Vector2(0, -5)
-	
 	set_up("Mixing Bowl", 4, {"Spot": bowl_spaces})
 
 
 func use(player):
-	use_bowl(player)
-
-
-func use_bowl(player):
-#	Loads ingredient in the bowl
+	#	Loads ingredient in the bowl
 	var occupied_spaces = get_spaces("Mixing Bowl")
 	var bowl_foods = get_spaces("Mixing Bowl", "Item")
 	var selected_space = inv.inventory["Mixing Bowl"][ObjectUI.space_select]
@@ -46,5 +43,3 @@ func remove_food(item_spot, location):
 	remove_item(item_spot, location)
 	return item
 
-
-		

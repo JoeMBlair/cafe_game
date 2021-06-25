@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tools/frying_pan/frying_pan.tscn" type="PackedScene" id=2]
@@ -14,6 +14,9 @@
 [ext_resource path="res://furniture/sink/sink.tscn" type="PackedScene" id=12]
 [ext_resource path="res://tools/recipe_book/recipe_book.tscn" type="PackedScene" id=13]
 [ext_resource path="res://furniture/work_station/work_station.tscn" type="PackedScene" id=14]
+[ext_resource path="res://food/prepared_meals/spanish_omelette/spanish_omelette.tscn" type="PackedScene" id=15]
+[ext_resource path="res://food/prepared_meals/omelette/omelette.tscn" type="PackedScene" id=16]
+[ext_resource path="res://food/prepared_meals/potato_salad/potato_salad.tscn" type="PackedScene" id=17]
 [ext_resource path="res://furniture/fridge/fridge.tscn" type="PackedScene" id=21]
 
 [node name="Main" type="Node2D"]
@@ -50,12 +53,23 @@ position = Vector2( 535, 128 )
 [node name="Sink" parent="Objects/Kitchen" instance=ExtResource( 12 )]
 position = Vector2( 618, 128 )
 
+[node name="PotatoSalad" parent="Objects/Kitchen/Sink" instance=ExtResource( 17 )]
+position = Vector2( -55, 146 )
+
 [node name="Fridge" parent="Objects/Kitchen" instance=ExtResource( 21 )]
 position = Vector2( 418, 116 )
-state = ""
 
 [node name="Plate" parent="Objects/Kitchen" instance=ExtResource( 9 )]
-position = Vector2( 576, 176 )
+position = Vector2( 575, 180 )
+
+[node name="Plate2" parent="Objects/Kitchen" instance=ExtResource( 9 )]
+position = Vector2( 615, 164 )
+
+[node name="Plate3" parent="Objects/Kitchen" instance=ExtResource( 9 )]
+position = Vector2( 539, 189 )
+
+[node name="Plate4" parent="Objects/Kitchen" instance=ExtResource( 9 )]
+position = Vector2( 488, 346 )
 
 [node name="FryingPan" parent="Objects/Kitchen" instance=ExtResource( 2 )]
 position = Vector2( 560, 208 )
@@ -79,6 +93,57 @@ directions = "left"
 
 [node name="Table" parent="Objects/SittingArea/TableSet1" instance=ExtResource( 4 )]
 
+[node name="TableSet3" type="YSort" parent="Objects/SittingArea"]
+position = Vector2( -58, 101 )
+
+[node name="ChairTop" parent="Objects/SittingArea/TableSet3" instance=ExtResource( 7 )]
+position = Vector2( 0, -48 )
+directions = "front"
+
+[node name="ChairLeft" parent="Objects/SittingArea/TableSet3" instance=ExtResource( 7 )]
+position = Vector2( -47, -9 )
+directions = "right"
+
+[node name="ChairRight" parent="Objects/SittingArea/TableSet3" instance=ExtResource( 7 )]
+position = Vector2( 45, -11 )
+directions = "left"
+
+[node name="Table" parent="Objects/SittingArea/TableSet3" instance=ExtResource( 4 )]
+
+[node name="TableSet4" type="YSort" parent="Objects/SittingArea"]
+position = Vector2( 101, -144 )
+
+[node name="ChairTop" parent="Objects/SittingArea/TableSet4" instance=ExtResource( 7 )]
+position = Vector2( 0, -48 )
+directions = "front"
+
+[node name="ChairLeft" parent="Objects/SittingArea/TableSet4" instance=ExtResource( 7 )]
+position = Vector2( -47, -9 )
+directions = "right"
+
+[node name="ChairRight" parent="Objects/SittingArea/TableSet4" instance=ExtResource( 7 )]
+position = Vector2( 45, -11 )
+directions = "left"
+
+[node name="Table" parent="Objects/SittingArea/TableSet4" instance=ExtResource( 4 )]
+
+[node name="TableSet5" type="YSort" parent="Objects/SittingArea"]
+position = Vector2( -45, -145 )
+
+[node name="ChairTop" parent="Objects/SittingArea/TableSet5" instance=ExtResource( 7 )]
+position = Vector2( 0, -48 )
+directions = "front"
+
+[node name="ChairLeft" parent="Objects/SittingArea/TableSet5" instance=ExtResource( 7 )]
+position = Vector2( -47, -9 )
+directions = "right"
+
+[node name="ChairRight" parent="Objects/SittingArea/TableSet5" instance=ExtResource( 7 )]
+position = Vector2( 45, -11 )
+directions = "left"
+
+[node name="Table" parent="Objects/SittingArea/TableSet5" instance=ExtResource( 4 )]
+
 [node name="TableSet2" type="YSort" parent="Objects/SittingArea"]
 position = Vector2( 80.484, -13.566 )
 
@@ -95,6 +160,12 @@ position = Vector2( 45, -10 )
 directions = "left"
 
 [node name="Table" parent="Objects/SittingArea/TableSet2" instance=ExtResource( 4 )]
+
+[node name="Omelette" parent="Objects/SittingArea/TableSet2/Table" instance=ExtResource( 16 )]
+position = Vector2( -175.484, -3.43399 )
+
+[node name="SpanishOmelette" parent="Objects/SittingArea/TableSet2/Table" instance=ExtResource( 15 )]
+position = Vector2( -147.484, -3.43399 )
 
 [node name="Other" type="YSort" parent="Objects"]
 
@@ -114,3 +185,7 @@ position = Vector2( 432, 566 )
 position = Vector2( 553, 116 )
 
 [node name="CustomerManager" parent="." instance=ExtResource( 10 )]
+position = Vector2( 294, 540 )
+level = "hard"
+
+[connection signal="ready" from="." to="CustomerManager" method="_on_Main_ready"]

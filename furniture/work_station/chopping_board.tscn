@@ -7,6 +7,7 @@
 [sub_resource type="CircleShape2D" id=1]
 
 [node name="ChoppingBoard" type="Area2D" groups=[
+"ChoppingBoard",
 "Interactable",
 ]]
 script = ExtResource( 3 )

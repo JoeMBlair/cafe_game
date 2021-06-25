@@ -10,11 +10,11 @@ radius = 13.4781
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 2 )
-region = Rect2( 48, 0, 16, 16 )
+region = Rect2( 32, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 2 )
-region = Rect2( 32, 0, 16, 16 )
+region = Rect2( 48, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 2 )
@@ -28,12 +28,12 @@ region = Rect2( 0, 0, 16, 16 )
 animations = [ {
 "frames": [ SubResource( 2 ) ],
 "loop": true,
-"name": "left",
+"name": "right",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 3 ) ],
 "loop": true,
-"name": "right",
+"name": "left",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 4 ) ],
@@ -488,6 +488,7 @@ tracks/7/keys = {
 }
 
 [node name="FryingPan" type="Area2D" groups=[
+"FryingPan",
 "Interactable",
 "PickUp",
 ]]

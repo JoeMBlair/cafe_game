@@ -9,6 +9,7 @@ radius = 12.8009
 
 [node name="MixingBowl" type="Area2D" groups=[
 "Interactable",
+"MixingBowl",
 ]]
 script = ExtResource( 1 )
 

@@ -15,25 +15,22 @@ func _ready():
 	valid_spaces += ["Hob"]
 	ui_offset = Vector2(10, -2)
 
+
 func _process(_delta):
 	if held:
 		var player = get_tree().get_nodes_in_group("Player")
 		player = player[0]
-#	if is_open:
-#		var selected_spot = item_space(space_select)
-#		selector.global_position = selected_spot.Spot.global_position
-#		get_input()
+
 
 func use(player):
-#	var held_item = player.held_item
-#	var pan_foods = get_spaces()
 	if ObjectUI.is_open:
 		var food_space = item_space(ObjectUI.space_select)
 		if food_space["Item"]:
 			remove_item(food_space, "Frying Pan", player.hand)			
 	elif add(player, "Frying Pan", "add"):
 		return
-	
+
+
 func ui_interact(player):
 	.ui_interact(player)
 

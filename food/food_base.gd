@@ -10,6 +10,7 @@ var can_cut = false
 var cook_temp = 1
 export var burnt = false
 
+
 func _ready():
 	set_item(self)
 	set_vars(self)
@@ -70,3 +71,4 @@ func valid_item(location, action):
 				"cook": if not is_cooked: return true
 				"add": return true
 	return false
+

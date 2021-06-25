@@ -29,102 +29,49 @@ var chairs
 var closet_chair
 var chosen_chair
 
-func valid_action(user):
-	var user_item = user.held_item
-	if user_item:
-		if user_item.can_cook:
-			if user_item.is_cooked:
-				return true
-			else:
-				return false
-		else:
-			return true
-	else:
-		return true
-
-
-func debug():
-	pass
-#	if Input.is_action_just_pressed("Debug"):
-#		var user = get_tree().get_nodes_in_group("Player")
-#		if valid_action(user[0]):
-#			if spawn_rate == spawn_rate_normal:
-#				spawn_rate = spawn_rate_extreme
-#				user[0].modulate = Color.red
-#			else:
-#				spawn_rate = spawn_rate_normal
-#				user[0].modulate = Color.white
-
 
 func _ready():
 	self.add_child(inv)
 	inv.set_up(inv_location, 1)
 	speech_bubble.visible = false
-#	chairs = get_tree().get_nodes_in_group("Chair")
-#	if not choose_chair():
-#		state = "wait"
-#	else:
-	state = "goto_chair"
-
+	print(global_position)	
+	
 
 func _process(_delta):
+	if state == "home":
+		if go_home():
+			queue_free()
+		
 	debug()
 	if chosen_chair and not is_seated:
 		if goto_location(chosen_chair.Node):
 			order()
-	elif not plate:
-		if check_order():
-			if plate["Item"]:
-				check_plate(plate)
-				var plate_food = plate.Item
-				if plate_food.item_type == "food":
-					if plate_food.can_cook and not plate_food.is_cooked:
-						talk("That's not cooked!")
-					elif plate_food.can_cook and plate_food.burnt:
-						talk("It's burnt!")
-					elif plate_food.item_name == item_chosen:
-						plate["In Use"] = true
-						talk("Thank you!")
-						$EatTimer.start()
-					else:
-						talk("That's not what I ordered.")
-	if state == "ate":
-		talk("Thanks for the meal! Bye.")
-		if go_home():
-			self.queue_free()
-
-func check_order():
-	var plate_spot = chosen_chair.Plate
-	if plate_spot.Item != null:
-		plate = plate_spot
-		return true
-	return false
-
-func talk(phrase):
-	speech_bubble.visible = true
-	speech_text.text = phrase
-
-
-func choose_chair():
-	if not chosen_chair.Node:
-		for chair in chairs:
-			if not chair.in_use:
-				closet_chair = chair
-				break
-		if closet_chair == null:
-			return false
-				
-	for chair in chairs:
-		if not chair.in_use:
-			if chair.global_position.distance_to(self.global_position) < closet_chair.global_position.distance_to(self.global_position):
-				closet_chair = chair
-	chosen_chair = closet_chair
-	closet_chair.in_use = self
-	return true
+	elif is_seated:
+		if not plate:
+			if check_order():
+				if plate["Item"]:
+					check_plate(plate)
+					var plate_food = plate.Item
+					if plate_food.item_type == "food":
+						if plate_food.can_cook and not plate_food.is_cooked:
+							talk("That's not cooked!")
+						elif plate_food.can_cook and plate_food.burnt:
+							talk("It's burnt!")
+						elif plate_food.item_name == item_chosen:
+							plate["In Use"] = true
+							talk("Thank you!")
+							$EatTimer.start()
+						else:
+							talk("That's not what I ordered.")
+#	if state == "ate":
+#		talk("Thanks for the meal! Bye.")
+#		if go_home():
+#			self.queue_free()
 
 
 func goto_location(object):
 	vector2vector = object.global_position - self.global_position
+	
 	direction = vector2vector.normalized()
 	velocity = direction * speed
 	velocity = move_and_slide(velocity)
@@ -135,19 +82,19 @@ func goto_location(object):
 		return true
 
 
-#func goto_seat():
-#	if not state == "seated":
-#		vector2vector = closet_chair.global_position - self.global_position
-#		direction = vector2vector.normalized()
-#		velocity = direction * speed
-#		velocity = move_and_slide(velocity)
-
-
 func order():
 	randomize()
 	item_chosen = ItemFood.random_food()
 	print(item_chosen)
 	state = "ordered"
+
+
+func check_order():
+	var plate_spot = chosen_chair.Plate
+	if plate_spot.Item != null:
+		plate = plate_spot
+		return true
+	return false
 
 
 func check_plate(chosen_plate):
@@ -171,6 +118,7 @@ func check_plate(chosen_plate):
 func eat():
 	var chosen_food = plate.Item.item_space(0)
 	plate["In Use"] = false
+	plate.Item.make_dirty()
 	inv.pick_up(plate.Item.remove_item(chosen_food), inv_location, $DetectorChair)
 	$AnimationPlayer.play("eat")
 	var food = inv.item_space(0)
@@ -178,40 +126,31 @@ func eat():
 	state = "eaten"
 
 
-func pick_up(item):
-	if not item:
-		return false
-	held_item = item
-	item.held = true
-	item.hand = get_node("DetectorChair")
-	item.player = self
-
-
-func remove_item():
-	var item = held_item
-	item.held = false
-	item.hand = null
-	item.player = null
-	held_item = null
-	return item
-
 
 func go_home():
 	if not door:
 		randomize()
-		var amount = spawn_rate[rand_range(0, spawn_rate.size())]
 		door = get_tree().get_nodes_in_group("Door")
-		
-		for i in amount:
-			var instance = scene.instance()
-			get_node("/root/Main").add_child(instance)
-			instance.global_position = door[0].global_position
-			instance.global_position.x += rand_range(10, 30)
-			instance.global_position.y += rand_range(10, 30)
-	if not goto_location(door[0]):
-		return false
-	else:
+#
+#		for i in amount:
+#			var instance = scene.instance()
+#			get_node("/root/Main").add_child(instance)
+#			instance.global_position = door[0].global_position
+#			instance.global_position.x += rand_range(10, 30)
+#			instance.global_position.y += rand_range(10, 30)
+	if goto_location(door[0]):
 		return true
+	else:
+		return false
+
+
+func talk(phrase):
+	speech_bubble.visible = true
+	speech_text.text = phrase
+
+
+func debug():
+	pass
 
 
 func _on_DetectorPlayer_body_entered(body):

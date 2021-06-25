@@ -33,68 +33,29 @@ var set_idle = false
 # Debug
 var glo_pos
 var glo_pos_item
+export var debug_toggle = false
 
 
 func _ready():
 	self.add_child(inv)
 	inv.set_up(inv_location, 1)
 
-func valid_actions(type):
-	var valid_pickups = []
-	var valid_interacts = []
-	
-	match type:
-		"PickUp":
-			for pick_up in pick_ups:
-				if  held_item == pick_up:
-					continue
-				elif not pick_up.detect:
-					continue
-				else:
-					valid_pickups += [pick_up]
-			return valid_pickups
-		"Interact":
-			for interact in interactables:
-				if not held_item == interact and not interact.held:
-					valid_interacts += [interact]
-			return valid_interacts
 
 func _process(_delta):
 	debug()
-#	glo_pos = $Hand.global_position
-#	if velocity != Vector2.ZERO:
-#	get_actions()
 	if held_item:
 		glo_pos_item = held_item.global_position
-			
 	if state != "idle" and velocity == Vector2.ZERO:
 		set_state("idle")
-		
-#func change_z_index():
-#		if held_item and held_item.item_type == "tool":
-#			if not held_item.is_open:
-#
-#				anim_player.play(String("held_" + state + "_" + direction))
-#				if held_item.item_name == "Frying Pan":
-#					held_item.anim_player.play(direction)
-#					pass
-#				if direction == "up":
-#					held_item.modulate = Color(1, 1, 1, 0.5)
-#				else:
-#					held_item.modulate = Color(1, 1, 1, 1)
-#		else:
-#			anim_player.play(String(state + "_" + direction))
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if disable_input.has("Move") and  anim_player.current_animation:
 		anim_player.stop()
 	elif not disable_input and not anim_player.current_animation and anim_player.assigned_animation:
 		anim_player.play()
 		
 	get_input()
-#	direction.x *= speed
-#	direction.y *= speed
 	
 	if not direction.x == 0:
 		if velocity.x > 0 and direction.x < 0:
@@ -137,35 +98,7 @@ func _physics_process(delta):
 		$Hand/HandSprite.visible = false
 
 
-func set_direction(player_direction):
-	direction_name = player_direction
-	held_item = inv.get_spaces("Player", "Item")
-	if held_item.size() == 0:
-		held_item = null
-	else:
-		held_item = held_item[0]
-	anim_name = "walk_" + direction_name
-	if held_item:
-		anim_name = "held_" + anim_name
-		if direction_name == "up":
-			held_item.modulate = Color(1, 1, 1, 0.5)
-		else:
-			held_item.modulate = Color(1, 1, 1, 1)
-		if held_item.item_name == "Frying Pan":
-			held_item.anim_player.play(direction_name)
-	anim_player.play(anim_name)
-	anim_player_rotate.play(String("direction_" + direction_name))
-
-func set_state(player_state):
-	state = player_state
-	anim_name = player_state + "_" + direction_name
-	if held_item:
-		anim_name = "held_" + anim_name
-	anim_player.play(anim_name)
-
 func get_input():
-#	velocity = Vector2.ZERO
-#	direction = Vector2.ZERO
 	if velocity == Vector2.ZERO:
 		direction = Vector2.ZERO
 		inputs_held.clear()
@@ -205,7 +138,6 @@ func get_input():
 		if Input.is_action_just_released("move_up"):
 #			direction.y = 0
 			inputs_held.erase("up")
-#		print(inputs_held)
 		
 		if inputs_held.size() == 0:
 			direction = Vector2.ZERO
@@ -233,7 +165,6 @@ func get_input():
 				direction.y = -1
 			elif direction_y == "down":
 				direction.y = 1
-		
 
 	if not disable_input.has("Pick Up"):
 		if Input.is_action_just_pressed("pick_up"):
@@ -255,15 +186,38 @@ func get_input():
 		if Input.is_action_just_pressed("eat") and held_item != null:
 			if held_item.is_cooked:
 				eat()
-#		return false		
 	else:
 		anim_player.stop()
-#	if velocity.y > 0 and direction != "down":
-#	elif velocity.y < 0 and direction != "up":
-#	elif velocity.x > 0 and direction != "right":
-#	elif velocity.x < 0 and direction != "left":
 		
 	direction = direction.normalized()
+
+
+func set_state(player_state):
+	state = player_state
+	anim_name = player_state + "_" + direction_name
+	if held_item:
+		anim_name = "held_" + anim_name
+	anim_player.play(anim_name)
+
+
+func set_direction(player_direction):
+	direction_name = player_direction
+	held_item = inv.get_spaces("Player", "Item")
+	if held_item.size() == 0:
+		held_item = null
+	else:
+		held_item = held_item[0]
+	anim_name = "walk_" + direction_name
+	if held_item:
+		anim_name = "held_" + anim_name
+		if direction_name == "up":
+			held_item.modulate = Color(1, 1, 1, 0.5)
+		else:
+			held_item.modulate = Color(1, 1, 1, 1)
+		if held_item.item_name == "Frying Pan":
+			held_item.anim_player.play(direction_name)
+	anim_player.play(anim_name)
+	anim_player_rotate.play(String("direction_" + direction_name))
 
 
 func action():
@@ -272,23 +226,31 @@ func action():
 	var nearest_interactable = nearest_action(valid_actions("Interact"))
 	if nearest_pick_up and not held_item:
 		pick_up(nearest_pick_up)
-#		change_z_index()
 	elif nearest_interactable:
 		nearest_interactable.use(self)
 
 
-func debug():
-	if Input.is_action_just_pressed("Debug"):
-		if held_item:
-			held_item.cook()
-	if Input.is_action_just_pressed("inventory"):
-		var fridge = get_tree().get_nodes_in_group("Fridge")
-		fridge[0].ui_interact(self)
 
 
-func eat():
-	$AnimationPlayer.play("eat")
-	held_item.get_node("AnimationPlayer").play("eat")
+func valid_actions(type):
+	var valid_pickups = []
+	var valid_interacts = []
+	
+	match type:
+		"PickUp":
+			for pick_up in pick_ups:
+				if  held_item == pick_up:
+					continue
+				elif not pick_up.detect:
+					continue
+				else:
+					valid_pickups += [pick_up]
+			return valid_pickups
+		"Interact":
+			for interact in interactables:
+				if not held_item == interact and not interact.held:
+					valid_interacts += [interact]
+			return valid_interacts
 
 
 func nearest_action(actions, type = "default"):
@@ -304,6 +266,15 @@ func nearest_action(actions, type = "default"):
 	return false
 
 
+func pick_up(item, location = inv_location, player_hand = hand, space_index = -1):
+	if inv.pick_up(item, location, player_hand, space_index):
+		set_direction(direction_name)
+		
+		for space in inv.get_spaces(location):
+			held_space = space
+			held_item = space.Item
+
+
 func remove_item(space):
 	var held_object = inv.remove_item(space)
 	
@@ -313,19 +284,22 @@ func remove_item(space):
 	return held_object
 
 
-func pick_up(item, location = inv_location, player_hand = hand, space_index = -1):
-	if inv.pick_up(item, location, player_hand, space_index):
-#		yield(get_tree().create_timer(0.5), "timeout")
-		set_direction(direction_name)
-#		pick_ups.erase(item)
-#		interactables.erase(item)
-		
-		for space in inv.get_spaces(location):
-			held_space = space
-			held_item = space.Item
+func eat():
+	$AnimationPlayer.play("eat")
+	held_item.get_node("AnimationPlayer").play("eat")
+
 
 func location_name():
 	return inv.location_name()
+
+
+func debug():
+	if Input.is_action_just_pressed("Debug"):
+		if held_item:
+			held_item.cook()
+	if Input.is_action_just_pressed("inventory"):
+		var fridge = get_tree().get_nodes_in_group("Fridge")
+		fridge[0].ui_interact(self)
 
 
 #	Checks for objects to interact with or pick up and adds them to an action 
@@ -333,19 +307,21 @@ func location_name():
 func _on_DetectorRadius_area_entered(area):
 	if area.is_in_group("Interactable"):
 		interactables.append(area)
-#		area.modulate = Color( 1, 0, 0, 1)
+		
+		if debug_toggle:
+			area.modulate = Color( 1, 0, 0, 1)
 
 	if area.is_in_group("PickUp"):
 		if area.get_owner() == self.get_owner() or area.get_owner() == null:
 			pick_ups.append(area)
-#		else:
-#			pick_ups.append(area.get_parent())
-#		area.modulate = Color( 0, 0, 1, 1)
+		
+		if debug_toggle:
+			area.modulate = Color( 0, 0, 1, 1)
 	
 	if area.is_in_group("PickUp") and  area.is_in_group("Interactable"):
-		pass
-#		area.modulate = Color( 0.63, 0.13, 0.94, 1) 
-		
+		if debug_toggle:
+			area.modulate = Color( 0.63, 0.13, 0.94, 1) 
+
 
 func _on_DetectorRadius_area_exited(area):
 	if area.is_in_group("Interactable"):
@@ -355,9 +331,5 @@ func _on_DetectorRadius_area_exited(area):
 	if area.is_in_group("PickUp"):
 		if area.get_owner() == self.get_owner()or area.get_owner() == null:
 			pick_ups.erase(area)
-#		else:
-#			pick_ups.erase(area.get_parent())
 		area.modulate = Color.white
-	
-		
-		
+

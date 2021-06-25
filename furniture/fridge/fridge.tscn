@@ -195,7 +195,6 @@ animations = [ {
 "Interactable",
 ]]
 script = ExtResource( 2 )
-state = "closed"
 
 [node name="FridgeColour" type="Sprite" parent="."]
 modulate = Color( 0.39, 0.58, 0.93, 1 )
@@ -410,7 +409,6 @@ position = Vector2( 3, 13 )
 scale = Vector2( 0.4, 0.4 )
 
 [node name="Mayo" parent="Door/DoorShelfSpaces/DoorSpotR3C3" instance=ExtResource( 3 )]
-scale = Vector2( 1, 1 )
 
 [node name="DoorSpotR3C4" type="Node2D" parent="Door/DoorShelfSpaces"]
 position = Vector2( 10, 13 )

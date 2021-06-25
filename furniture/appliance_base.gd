@@ -22,12 +22,16 @@ func set_up(location, size = -1, params = []):
 	return inv.set_up(location, size, params)
 
 
+func add(player, location, action, hand = null):
+	return inv.add(player, location, action, hand)
+
+
 func pick_up(item = null, location = inv.default_location, hand = null, space_index = -1):
 	return inv.pick_up(item, location, hand, space_index)
 
 
-func add(player, location, action, hand = null):
-	return inv.add(player, location, action, hand)
+func copy(space_item):
+	return inv.copy(space_item)
 
 
 func remove_item(space, location = inv.default_location, hand = null):
@@ -42,28 +46,36 @@ func get_spaces(location, extra = null, extra2 = null, get_type = "used"):
 	return inv.get_spaces(location, extra, extra2, get_type)
 
 
+func get_space(item, location = inv.default_location):
+	return inv.get_space(item, location)
+
+
 func item_space(space_index, location = inv.default_location):
 	return inv.item_space(space_index, location)
-
-func get_location_names():
-	return inv.get_location_names()
-
-func location_name():
-	return inv.location_name()
-
-func ui_interact(player):
-	ObjectUI.ui_interact(player, self, ui_scale, ui_offset, selector, anim_player, collision)
-
-func copy(space_item):
-	return inv.copy(space_item)
 
 
 func is_space(location = inv.default_location):
 	return inv.is_space(location)
 
 
+func has_item(item, location = inv.default_location):
+	return has_item(item, location)
+
+
 func inv_size(location = inv.default_location):
 	return inv.inv_size(location)
+
+
+func get_location_names():
+	return inv.get_location_names()
+
+
+func location_name():
+	return inv.location_name()
+
+
+func ui_interact(player):
+	ObjectUI.ui_interact(player, self, ui_scale, ui_offset, selector, anim_player, collision)
 
 
 func mix(item_tool = null, can_cook = false, location = inv.default_location):
@@ -89,6 +101,7 @@ func mix(item_tool = null, can_cook = false, location = inv.default_location):
 	else:
 		return false
 
+
 func valid_recipe(location, item_tool = null):
 	var ingredients = []
 	var object	
@@ -111,3 +124,4 @@ func valid_recipe(location, item_tool = null):
 		if ingredients.hash() == recipe.hash():
 			return [food, ingredients]
 	return false
+
